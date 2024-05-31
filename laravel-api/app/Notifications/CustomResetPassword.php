@@ -39,10 +39,9 @@ class CustomResetPassword extends Notification
         $url = 'http://localhost:8100/adm/modifpwd/' . $this->token . '/email/' . urlencode($notifiable->email ). '/';
 
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->line ('our password reset token is:'.$this->token)
-                    ->action('Notification Action', $url)
-                    ->line('Thank you for using our application!');
+                    ->line(__('message.nvxMdP'))
+                    ->action(__('message.btNvxMdp'), $url)
+                    ->line('Merci d\'utiliser ShareMe');
     }
 
     /**

@@ -30,7 +30,7 @@
               <q-btn flat class="float-right" no-caps label="Créer un compte" @click="creerCompte" />
             </div>
             <div class="col-6 ">
-              <q-btn flat class="float-right" no-caps label="Mot de passe oublié" @click="modifierMdp" />
+              <q-btn flat class="float-right" no-caps label="Mot de passe oublié" :to="{name : 'MotDePasseOublier'}" />
             </div>
           </div>
         </div>
@@ -47,7 +47,7 @@
 import { checkRules } from 'src/utils/config'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-
+import { API_demandeModifierMdp } from 'src/api/users';
 
 import {
   login
@@ -92,22 +92,6 @@ async function connexion() {
     if (error instanceof Error) message = error.message
     else message = String(error)
     IhmModule.displayError({ code: 'CXPL', param: message });
-  }
-}
-
-
-//
-// permet d'envoyer un nouveau mot de passe
-async function modifierMdp() {
-  if (email.value) {
-    // appel à la fonction d'envoi d'un nouveau Mdp
-    let { status, message } = await generateNewMdp({ 'email': email.value })
-    if (status) {
-      // message à l'utilisateur pour lui demander de saisir ces nouvelles infos.
-      IhmModule.displayInfo({ code: 'FCMP' })
-    } else {
-      IhmModule.displayError({ code: 'ADMIN', param: message });
-    }
   }
 }
 

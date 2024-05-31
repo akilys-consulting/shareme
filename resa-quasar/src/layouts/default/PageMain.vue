@@ -1,5 +1,5 @@
 <template>
-  <q-layout style="height: 100%; width: 100%" view="hHh Lpr lff">
+  <q-layout color="black" style="height: 100%; width: 100%" view="hHh Lpr lff">
     <navbar />
 
     <q-page-container>

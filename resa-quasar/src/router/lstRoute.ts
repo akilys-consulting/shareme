@@ -7,7 +7,7 @@ export const routes = [
         path: 'modifpwd/:token/email/:email',
         name: 'modifpwd',
         props: true,
-        component: () => import('src/views/connexion/ModifierPassword.vue'),
+        component: () => import('src/views/connexion/ChangerMotDePasse.vue'),
       },
 
     ]
@@ -23,7 +23,12 @@ export const routes = [
       },
       {
         path: 'connexion',
+        name:'connexion',
         component: () => import('src/views/connexion/Connexion.vue'),
+      },      {
+        path: 'MotDePasseOublier',
+        name:'MotDePasseOublier',
+        component: () => import('src/views/connexion/MotDePasseOublier.vue'),
       },
       {
         path: 'register',

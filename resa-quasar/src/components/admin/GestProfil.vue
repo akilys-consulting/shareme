@@ -1,9 +1,9 @@
 <template>
-  <q-item v-if="connected" clickable :to="{ name: 'profil' }">
+  <q-item  clickable :to="{ name: 'connexion' }">
     <q-item-section avatar class="logoff">
-          <q-icon  name="perm_identity" />
+          <q-icon color="red" name="settings_power" />
     </q-item-section>
-    <q-item-section>connexion</q-item-section>
+    <q-item-section>Connexion</q-item-section>
   </q-item>
   <q-item  v-if="connected" clickable v-ripple @click.prevent="loadModifPwd()">
       <q-item-section avatar class="logoff">
@@ -11,7 +11,7 @@
       </q-item-section>
       <q-item-section>Changer son mot de passe</q-item-section>
   </q-item>
-  <q-item clickable v-ripple @click.prevent="deconnecter()">
+  <q-item clickable v-if="connected" v-ripple @click.prevent="deconnecter()">
     <q-item-section avatar class="logoff">
       <q-icon color="red" name="settings_power" />
     </q-item-section>
