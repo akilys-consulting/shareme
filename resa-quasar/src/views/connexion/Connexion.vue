@@ -53,8 +53,8 @@ import {
   login
 } from 'src/api/users';
 import { ihmStore } from 'src/stores/ihm';
-
-
+import { userStore } from 'src/stores/users';
+const userModule = userStore()
 const IhmModule = ihmStore()
 const router = useRouter()
 
@@ -73,16 +73,20 @@ async function connexion() {
   //
   try {
     // contrôle de la connexion en base
+    IhmModule.startWaiting();
     let { status, message } = await login({ 'email': email.value, 'password': password.value });
-
+    IhmModule.stopWaiting();
 
     // connexion acceptée
     if (status) {
       // pas de message sur une connexion
       //IhmModule.displayInfo({ code: "CXOL" });
-
+      userModule.refreshConnected()
       // token validé, on peut aller sur l'accueil
       router.push({ name: 'accueil' });
+          //
+      // message de déconnexion
+      IhmModule.displayInfo({ code: 'CXOL' });
 
     } else {
       IhmModule.displayError({ code: 'CXPL', param: message });

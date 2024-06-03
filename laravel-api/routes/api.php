@@ -21,3 +21,15 @@ Route::get('/profil', [AuthController::class, 'getUser'])->middleware('auth:sanc
 
 Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail']);
 Route::post('/reset-password', [AuthController::class, 'reset']);
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return response()->json(['user' => $request->user()]);
+});
+
+Route::middleware('auth:sanctum')->get('/auth-check', function (Request $request) {
+    return response()->json(['authenticated' => true, 'user' => $request->user()]);
+});
+
+Route::get('/auth-check', function () {
+    return response()->json(['authenticated' => false]);
+});
