@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EvenementController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,6 +26,9 @@ Route::post('/reset-password', [AuthController::class, 'reset']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return response()->json(['user' => $request->user()]);
 });
+
+Route::middleware('auth:sanctum')->get('/getAllEvt', [EvenementController::class, 'getAll']);
+
 
 Route::middleware('auth:sanctum')->get('/auth-check', function (Request $request) {
     return response()->json(['authenticated' => true, 'user' => $request->user()]);

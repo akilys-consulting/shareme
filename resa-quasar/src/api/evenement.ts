@@ -1,53 +1,25 @@
 import { api } from 'boot/axios';
-import { K_UrlApi } from 'src/utils/config';
 import { type ApiType } from 'src/api/api_types';
-import {
-  type EvenementType,
-  type ProgrammationType,
-  type filterEventType,
-} from 'src/types/evenements';
+import {getTokenCnx} from 'src/utils/cookie'
 
-import { getToken } from 'src/utils/cookie';
-
-function getAuthToken() {
-  const token = getToken;
-  return {
-    Authorization: 'Bearer ' + token,
-  };
-}
-//
-// Permet de récupérer les catégories définies dans les évènements
-export const getCategories = async (): Promise<ApiType> => {
-  const request = await api.post('appli/getCategories', {
-    method: 'GET',
-  });
-  const response = await request.data;
-  return response;
-};
 
 //
 // permet de récupérer tous les enregistrements evènments
-export const listEvenements = async (data: {
-  filter: filterEventType;
-  offset: number;
-  limit: number;
-  status: string | null;
-}): Promise<ApiType> => {
-  const request = await api.post('appli/listEvenement', {
-    headers: getAuthToken(),
-    method: 'POST',
-    societeId: data.filter.societeId,
-    datefilter: data.filter.date,
-    categorieFilter: data.filter.cat,
-    stringSearch: data.filter.search,
-    offset: data.offset,
-    limit: data.limit,
-    status: data.status,
+export const listEvenements = async (): Promise<ApiType> => {
+  const token = getTokenCnx();
+  try {
+  const response= await api.get('getAllEvt', {
+    headers: {Authorization: `Bearer ${token}`}
   });
-  const response = await request.data;
-  return response;
+  if ( response.status === 200){
+    // lecture du retour
+      return { status: true, data:response.data.evenements, message: 'list evet ok' };
+    }
+  }  catch (error) {
+    return { status: false, data:[{}], message: (error as Error).message };
+  }
 };
-
+/*
 //
 // permet de récupérer tous les enregistrements evènments
 export const getEvenement = async (data: { id: string }): Promise<ApiType> => {
@@ -134,4 +106,4 @@ export const getCategorie = async (data: object): Promise<ApiType> => {
   });
   const response = await request.json();
   return response;
-};
+};*/

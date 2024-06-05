@@ -16,7 +16,7 @@ export const typeProgrammation = [
 ];
 export interface ProgrammationType {
   id: number | null;
-  type: periode;
+  type: string;
   datedebut: string;
   datefin: string;
   jours?: string[];
