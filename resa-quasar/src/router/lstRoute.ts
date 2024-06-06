@@ -9,25 +9,26 @@ export const routes = [
         props: true,
         component: () => import('src/views/connexion/ChangerMotDePasse.vue'),
       },
-
-    ]
+    ],
   },
   {
     path: '/',
+    redirect: { path: '/accueil' },
     component: () => import('src/layouts/default/PageMain.vue'),
     children: [
       {
         path: 'accueil',
-        name : 'accueil',
+        name: 'accueil',
         component: () => import('src/views/evenement/MesEvenements.vue'),
       },
       {
         path: 'connexion',
-        name:'connexion',
+        name: 'connexion',
         component: () => import('src/views/connexion/Connexion.vue'),
-      },      {
+      },
+      {
         path: 'MotDePasseOublier',
-        name:'MotDePasseOublier',
+        name: 'MotDePasseOublier',
         component: () => import('src/views/connexion/MotDePasseOublier.vue'),
       },
       {
@@ -43,11 +44,8 @@ export const routes = [
           requiresAuth: true,
         },
       },
-
     ],
   },
-
-
 
   // Always leave this as last one,
   // but you can also remove it

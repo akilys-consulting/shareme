@@ -1,10 +1,9 @@
 import { type stringNullable, type adresseListObject } from 'src/types/general';
-import { type ProgrammationType } from 'src/types/programmation_evt'
+import { type ProgrammationType } from 'src/types/programmation_evt';
 
 export type periode = 'days' | 'weeks' | 'months' | '*';
 
 export type categoriesType = string[];
-
 
 export interface categorie {
   text: string;
@@ -28,7 +27,7 @@ export interface EvenementType {
   recurrence_set: boolean;
   date_debut: Date;
   date_fin: Date;
-  recurrence?:ProgrammationType;
+  recurrence?: ProgrammationType;
 }
 
 export interface PlanningType {
@@ -40,20 +39,4 @@ export interface typePlanning {
   start: string;
   end: string;
   permanentDays?: string[];
-}
-
-export const defaultEvenement: EvenementType = {
-id: -1,
-titre: '',
-adresse: {  data:'', value:{adr: '',
-  latLng: {
-    lat: 0,
-    lng: 0
-  }}},
-organisateurid: -1,
-description: '',
-categories: [],
-prix: '',
-actif: true,
-site: ''
 }

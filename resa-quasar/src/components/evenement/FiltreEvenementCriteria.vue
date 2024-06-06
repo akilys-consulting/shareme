@@ -1,5 +1,5 @@
 <template>
-  <q-btn color="primary" @click="lancerRecherche" class="q-mb-lg text-center" label="rechercher"></q-btn>
+  <q-btn color="primary" class="q-mb-lg text-center" label="rechercher"></q-btn>
   <q-input rounded hint="appuyer sur entrée" @clear="clearFilter('search')" outlined clearable
      v-model="filter.search" dense label="contient..."
     maxlength="30"></q-input>

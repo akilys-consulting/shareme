@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return response()->json(['user' => $request->user()]);
 });
 
-Route::middleware('auth:sanctum')->get('/getAllEvt', [EvenementController::class, 'getAll']);
+Route::get('/getAllEvt', [EvenementController::class, 'getAll']);
 
 
 Route::middleware('auth:sanctum')->get('/auth-check', function (Request $request) {
