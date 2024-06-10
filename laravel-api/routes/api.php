@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EvenementController;
+use App\Http\COntrollers\GoogleController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,3 +38,6 @@ Route::middleware('auth:sanctum')->get('/auth-check', function (Request $request
 Route::get('/auth-check', function () {
     return response()->json(['authenticated' => false]);
 });
+
+Route::get('auth/google', [GoogleController::class,'redirectToGoogle']);
+Route::get('auth/google/callback', [GoogleController::class,'handleGoogleCallback']);
