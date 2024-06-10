@@ -74,10 +74,6 @@ const filter = ref<filterEventType>()
   },
 });*/
 
-function lancerRecherche() {
-  //setFilterEVt(filter.value);
-  //emit('update:modelValue', filter.value);
-}
 //
 // permet de mettre à jour le filtre sur un changement de valeur
 function updatefilter(data: filterEventType, key: string) {

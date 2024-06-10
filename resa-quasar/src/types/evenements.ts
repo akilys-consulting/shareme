@@ -11,7 +11,6 @@ export interface categorie {
 }
 
 export interface filterEventType {
-  societeId: number;
   date: string;
   cat: categoriesType;
   search: string;
