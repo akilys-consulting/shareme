@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Evenement;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class EvenementController extends Controller
 {
@@ -20,6 +21,10 @@ class EvenementController extends Controller
 
         if ($filtre['search']) {
             $query->whereRaw('UPPER(titre) LIKE ?', ['%' . strtoupper($filtre['search']) . '%']);
+        }
+        if ($filtre['date']) {
+            $date = Carbon::createFromFormat('d/m/Y', $filtre['date'])->startOfDay();
+            $query->where('date_debut','>', $date);
         }
         $evenements = $query->get();
 

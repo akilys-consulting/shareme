@@ -15,7 +15,7 @@
           ></q-input>
         </div>
         <div class="col-lg-3 col-md-3 q-px-xs q-py-xs">
-          <q-input rounded outlined dense v-model="filter.date" mask="date">
+          <q-input rounded outlined dense v-model="filter.date">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy
@@ -25,7 +25,8 @@
                 >
                   <q-date
                     v-model="filter.date"
-                    mask="YYYY-MM-DD"
+                    mask="DD/MM/YYYY"
+                    today-btn
                     @update:model-value="updatefilter($event, 'date')"
                   >
                     <div class="row items-center justify-end">
@@ -61,6 +62,14 @@
         class="text-center"
         label="rechercher"
         @click="lancerRecherche"
+      ></q-btn>
+      <q-btn
+        color="secondary"
+        flat
+        rouded
+        class="text-center"
+        label="effacer"
+        @click="effacerCritere"
       ></q-btn></q-card-actions
   ></q-card>
 </template>
@@ -72,18 +81,15 @@ import {
 } from 'src/types/evenements';
 
 import { ref } from 'vue';
-import { setFilterEVt, getFilterEVt } from 'src/utils/cookie';
+import { setFilterEVt, getFilterEVt, removeFilterEvt } from 'src/utils/cookie';
 
 const emit = defineEmits(['filtreModifie']);
-// déclaration des paramètres d'entrée
-/*const props = defineProps({
-  filter: { type: Object as PropType<filterEventType>, required: true },
-});*/
 
 const listCategories = ref<categoriesType>(['randonnée', 'théatre', 'sortie']);
 
 const filter = ref<filterEventType>({ search: '', cat: [], date: '' });
 filter.value = getFilterEVt();
+
 // permet de mettre à jour le filtre sur un changement de valeur
 function updatefilter(data: filterEventType, key: string) {
   // mise à jour de la data
@@ -92,9 +98,18 @@ function updatefilter(data: filterEventType, key: string) {
   setFilterEVt(filter.value);
 }
 
+//
+// permet de mémroiser les critères de recherche
+// et de lancer la requêtes afin d'afficher les évènments correspondants
 function lancerRecherche() {
   setFilterEVt(filter.value);
   emit('filtreModifie', filter.value);
+}
+
+//
+// permet d'effacer les critères mémorisés
+function effacerCritere() {
+  removeFilterEvt();
 }
 </script>
 
