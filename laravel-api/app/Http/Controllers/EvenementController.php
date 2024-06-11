@@ -7,12 +7,22 @@ use Illuminate\Http\Request;
 
 class EvenementController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
-    public function getAll()
+    public function getAll(Request $request)
     {
-        $evenements = Evenement::all();
+
+        $filtre = $request->input('filtre');
+
+        $query = Evenement::query();
+
+        if ($filtre['search']) {
+            $query->whereRaw('UPPER(titre) LIKE ?', ['%' . strtoupper($filtre['search']) . '%']);
+        }
+        $evenements = $query->get();
+
         return response()->json([
             'status' => true,
             'evenements' => $evenements

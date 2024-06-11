@@ -13,23 +13,6 @@
             class="q-pa-sm q-ma-sm item_menu"
           />
           <q-btn
-            name="search"
-            flat
-            label="filtrer"
-            icon="manage_search"
-            class="q-pa-sm q-ma-sm item_menu"
-            @click="icon = true"
-          >
-          </q-btn>
-
-          <q-btn
-            name="event"
-            label="ajouter"
-            flat
-            icon="edit_calendar"
-            class="q-pa-sm q-ma-sm C item_menu"
-          />
-          <q-btn
             name="profil"
             flat
             icon="record_voice_over"
@@ -70,37 +53,6 @@
       {{ dateJour }} <q-separator />
     </q-toolbar>
   </q-header>
-  <q-dialog v-model="icon" position="top">
-    <q-card class="fond_menu">
-      <q-card-section class="row items-center q-pb-none">
-        <div class="text-h6">Sélectionner vos critères</div>
-        <q-space />
-        <q-btn icon="close" color="primary" round dense v-close-popup />
-      </q-card-section>
-      <q-card-section>
-        <q-select
-          filled
-          v-model="catFilters"
-          multiple
-          label="Choix des catégories"
-          :options="categorie"
-          style="width: 450px"
-          class="fond_menu"
-        />
-        <q-separator />
-        Uniquement mes évènements
-        <q-toggle
-          v-model="mesEvt"
-          class="item_menu"
-          checked-icon="check"
-          left-label
-        />
-      </q-card-section>
-      <q-card-actions align="center"
-        ><q-btn color="primary" flat>valider</q-btn></q-card-actions
-      >
-    </q-card></q-dialog
-  >
 </template>
 
 <script lang="ts" setup>

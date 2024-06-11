@@ -1,22 +1,32 @@
 import { api } from 'boot/axios';
 import { type ApiType } from 'src/api/api_types';
-import {getTokenCnx} from 'src/utils/cookie'
-
+import { getTokenCnx, getFilterEVt } from 'src/utils/cookie';
 
 //
 // permet de récupérer tous les enregistrements evènments
 export const listEvenements = async (): Promise<ApiType> => {
   const token = getTokenCnx();
+  const filtre = getFilterEVt();
+  console.log('filtre', filtre);
   try {
-  const response= await api.get('getAllEvt', {
-    headers: {Authorization: `Bearer ${token}`}
-  });
-  if ( response.status === 200){
-    // lecture du retour
-      return { status: true, data:response.data.evenements, message: 'list evet ok' };
+    const response = await api.post(
+      '/getAllEvt',
+      {
+        filtre: filtre,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    if (response.status === 200) {
+      // lecture du retour
+      return {
+        status: true,
+        data: response.data.evenements,
+        message: 'list evet ok',
+      };
     }
-  }  catch (error) {
-    return { status: false, data:[{}], message: (error as Error).message };
+  } catch (error) {
+    return { status: false, data: [{}], message: (error as Error).message };
   }
 };
 /*

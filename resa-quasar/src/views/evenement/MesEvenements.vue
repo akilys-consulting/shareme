@@ -1,4 +1,22 @@
 <template>
+  <q-expansion-item
+    icon="search"
+    color="primary"
+    class="lt-md"
+    dense
+    default-opened
+    ><div class="card-filtre-expand">
+      <filtrageEvenement
+        @filtreModifie="refraichirListeEVenement"
+        class="card-filtre-expand"
+      ></filtrageEvenement></div
+  ></q-expansion-item>
+  <div class="gt-sm">
+    <filtrageEvenement
+      @filtreModifie="refraichirListeEVenement"
+      class="card-filtre"
+    ></filtrageEvenement>
+  </div>
   <div class="q-pa-md">
     <q-table
       style="height: 400px"
@@ -26,6 +44,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import evtDetail from 'src/components/evenement/ConsultEvent.vue';
+import filtrageEvenement from 'src/components/evenement/FiltreEvenement.vue';
 
 import { listEvenements } from 'src/api/evenement';
 import { type EvenementType } from 'src/types/evenements';
@@ -69,4 +88,16 @@ async function getAllevt() {
     ihmModule.displayError({ code: 'EVGA', param: message });
   }
 }
+
+async function refraichirListeEVenement() {
+  await getAllevt();
+}
 </script>
+<style>
+.card-filtre {
+  max-width: 80%;
+}
+.card-filtre-expand {
+  max-width: 100%;
+}
+</style>

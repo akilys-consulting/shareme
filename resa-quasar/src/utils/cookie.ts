@@ -48,8 +48,8 @@ const FilterKey = 'resa4AllEvtFilter';
 export const setFilterEVt = (criteres: filterEventType) =>
   Cookies.set(FilterKey, JSON.stringify(criteres));
 
-export const getFilterEVt = (): any => {
-  let reponse = null;
+export const getFilterEVt = (): filterEventType => {
+  let reponse: filterEventType = { search: '', cat: [], date: '' };
   if (Cookies.has(FilterKey)) reponse = Cookies.get(FilterKey);
   return reponse;
 };
