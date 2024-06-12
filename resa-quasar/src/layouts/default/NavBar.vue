@@ -1,7 +1,7 @@
 <template>
   <q-header class="bg-white q-py-md text-primary text-color">
     <q-toolbar flat class="q-mr-sm">
-      ShareMe<q-separator />
+      ShareMe{{ connected }}<q-separator />
       <q-toolbar-title class="text-center">
         <q-tabs v-model="tab" class="text-teal">
           <q-btn

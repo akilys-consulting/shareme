@@ -100,7 +100,7 @@ async function refraichirListeEVenement() {
   await getAllevt();
 }
 </script>
-<style>
+<style scoped>
 .card-filtre {
   max-width: 80%;
 }

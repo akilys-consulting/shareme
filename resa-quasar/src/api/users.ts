@@ -2,7 +2,7 @@ import { api } from 'boot/axios';
 
 import { type ApiType, type connexionType } from 'src/api/api_types';
 import { type UserType } from 'src/types/users';
-import { setTokenCnx, getTokenCnx, removeTokenCnx } from 'src/utils/cookie';
+import { setCookieUser, getTokenCnx, removeTokenCnx } from 'src/utils/cookie';
 
 //
 // création d'un compte utilisateur
@@ -19,7 +19,9 @@ export const createAccount = async (user: UserType): Promise<ApiType> => {
       });
       //
       // stockage du token
-      setTokenCnx(request.data.access_token);
+      const userData: UserType = request.data.user;
+      userData.token = request.data.access_token;
+      setCookieUser(userData);
       return { status: true, message: 'utilisateur créé' };
     } else {
       return { status: false, message: 'mot de passe vide' };
@@ -36,8 +38,11 @@ export const login = async (data: connexionType): Promise<ApiType> => {
       password: data.password,
     });
     //
-    // stockage du token
-    setTokenCnx(request.data.access_token);
+    // stockage du user avec son token
+    const userData: UserType = request.data.user;
+    userData.token = request.data.access_token;
+    setCookieUser(userData);
+
     return { status: true, message: 'utilisateur connecté' };
   } catch (error: any) {
     return { status: false, message: error.response.data.message };

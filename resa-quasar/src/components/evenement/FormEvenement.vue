@@ -89,14 +89,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { type EvenementType, type categoriesType } from 'src/types/evenements';
+import { type UserType } from 'src/types/users';
 import adrManagement from 'src/components/ihm/AdrManagementgouv.vue';
 
 import { evtStore } from 'src/stores/evenement';
 const evtModule = evtStore();
 
+import { userStore } from 'src/stores/users';
+const userModule = userStore();
+
 const modelValue = ref<EvenementType>(evtModule.getCurrentEvt);
+
+onMounted(() => {
+  const user: UserType = userModule.getUserConnected;
+  const auteur: UserType = { name: user.name, id: user.id };
+});
+
 const listCategories = ref<categoriesType>(['randonnée', 'théatre', 'sortie']);
 const lstOrganisateur = ref(['paul', 'pierre', 'jacques']);
 const actif = ref('');

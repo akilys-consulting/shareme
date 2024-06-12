@@ -120,6 +120,7 @@ async function connexion() {
     if (status) {
       // pas de message sur une connexion
       //IhmModule.displayInfo({ code: "CXOL" });
+      userModule.setUserConnected();
       userModule.refreshConnected();
       // token validé, on peut aller sur l'accueil
       router.push({ name: 'accueil' });
@@ -148,7 +149,7 @@ function loginWithGoogle() {
 }
 </script>
 
-<style>
+<style scoped>
 .login {
   margin-top: 15%;
   opacity: 0.8;
