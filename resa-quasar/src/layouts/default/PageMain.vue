@@ -7,16 +7,10 @@
         <router-view />
       </div>
     </q-page-container>
-
   </q-layout>
 </template>
 
 <script setup lang="ts">
-
-import navbar from 'src/layouts/default/NavBar.vue'
-
-
+import navbar from 'src/layouts/default/NavBar.vue';
 </script>
-<style>
-
-</style>
+<style></style>

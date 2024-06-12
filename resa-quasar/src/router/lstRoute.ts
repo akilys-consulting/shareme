@@ -46,6 +46,26 @@ export const routes = [
       },
     ],
   },
+  {
+    path: '/evt',
+    redirect: { path: '/accueil' },
+    component: () => import('src/layouts/default/PageMain.vue'),
+    children: [
+      {
+        path: 'detailEvenement',
+        name: 'detailEvenement',
+        component: () => import('src/views/evenement/DetailEvenement.vue'),
+      },
+      {
+        path: 'ajoutEvenement',
+        name: 'ajoutEvenement',
+        component: () => import('src/views/evenement/AjoutEvenement.vue'),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ],
+  },
 
   // Always leave this as last one,
   // but you can also remove it

@@ -18,8 +18,9 @@ export interface filterEventType {
 
 export interface EvenementType {
   id: number;
-  titre: stringNullable;
+  titre: string;
   description?: string;
+  url?: string;
   adresse: adresseListObject;
   auteurid?: number;
   categories?: categorie[];
@@ -27,6 +28,7 @@ export interface EvenementType {
   date_debut: Date;
   date_fin: Date;
   recurrence?: ProgrammationType;
+  actif: boolean;
 }
 
 export interface PlanningType {
@@ -39,3 +41,23 @@ export interface typePlanning {
   end: string;
   permanentDays?: string[];
 }
+
+export const evenementVide = {
+  id: null,
+  titre: 'Nouveau titre',
+  adresse: {
+    data: '',
+    value: {
+      adr: '',
+      latLng: {
+        lat: 0,
+        lng: 0,
+      },
+    },
+  },
+  description: '',
+  recurrence_set: false,
+  date_Debut: Date.now(),
+  date_fin: Date.now(),
+  actif: false,
+};

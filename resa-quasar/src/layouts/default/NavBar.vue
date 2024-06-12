@@ -27,8 +27,13 @@
                   <q-item-section avatar>
                     <q-icon color="red" name="logout" />
                   </q-item-section>
-
                   <q-item-section>Déconnexion</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup @click="ajouterEvenement">
+                  <q-item-section avatar>
+                    <q-icon color="primary" name="post_add" />
+                  </q-item-section>
+                  <q-item-section>ajout évènement</q-item-section>
                 </q-item>
                 <q-item clickable v-close-popup>
                   <q-item-section avatar>
@@ -45,7 +50,8 @@
             label="Profil"
             v-else
             :to="{ name: 'connexion' }"
-            icon="person"
+            icon="voice_over_off"
+            color="red"
             class="q-pa-sm q-ma-sm item_menu"
           />
         </q-tabs>
@@ -61,22 +67,25 @@ import { date } from 'quasar';
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+import { evenementVide } from 'src/types/evenements';
+
 import { ihmStore } from 'src/stores/ihm';
 const IhmModule = ihmStore();
 
 import { userStore } from 'src/stores/users';
 const userModule = userStore();
 
+import { evtStore } from 'src/stores/evenement';
+const evtModule = evtStore();
+
 import { logout } from 'src/api/users';
 
 const { connected } = storeToRefs(userModule);
 const dateJour = ref<string>();
 const tab = ref('home');
-
-const categorie = ref(['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle']);
-const catFilters = ref();
-const icon = ref(false);
-const mesEvt = ref(false);
 
 onMounted(() => {
   console.log('state', connected);
@@ -103,6 +112,13 @@ async function deconnecter() {
     IhmModule.displayError({ code: 'CXCK', param: response.message });
     return null;
   }
+}
+
+function ajouterEvenement() {
+  evtModule.setCurrentEvt(evenementVide);
+  router.push({
+    name: 'ajoutEvenement',
+  });
 }
 </script>
 

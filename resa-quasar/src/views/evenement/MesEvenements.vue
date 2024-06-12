@@ -17,13 +17,13 @@
       class="card-filtre"
     ></filtrageEvenement>
   </div>
-
+  <q-card class="my-card"> </q-card>
   <div class="q-pa-md">
     <q-table
       style="height: 400px"
       flat
       bordered
-      title="Les activités à venir"
+      :title="no_data ? 'Pas de données à afficher' : 'Les activités à venir'"
       grid
       :rows="TabEvenements"
       row-key="index"
@@ -35,16 +35,17 @@
     >
       <template v-slot:item="props">
         <div class="q-pa-xs q-pb-md col-xs-12 col-sm-12 col-md-12">
-          <evtDetail :evt_data="props.row" />
+          <syntheseEvt :evt_data="props.row" />
         </div>
       </template>
     </q-table>
   </div>
+  >
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import evtDetail from 'src/components/evenement/ConsultEvent.vue';
+import syntheseEvt from 'src/components/evenement/SyntheseEvenement.vue';
 import filtrageEvenement from 'src/components/evenement/FiltreEvenement.vue';
 
 import { listEvenements } from 'src/api/evenement';
@@ -57,6 +58,7 @@ const TabEvenements = ref<EvenementType[]>([]);
 const pagination = ref({
   rowsPerPage: 0,
 });
+const no_data = ref(false);
 
 onMounted(async () => {
   await getAllevt();
@@ -68,11 +70,15 @@ onMounted(async () => {
 async function getAllevt() {
   try {
     ihmModule.startWaiting();
+    no_data.value = false;
     const { data, status, message } = await listEvenements();
     ihmModule.stopWaiting();
     if (status) {
       //nbRow.value = count ? count : 0;
       TabEvenements.value = <EvenementType[]>data;
+      if (TabEvenements.value.length == 0) {
+        no_data.value = true;
+      }
     } else {
       ihmModule.displayError({ code: 'EVGA', param: message });
       console.log('message', status, message);

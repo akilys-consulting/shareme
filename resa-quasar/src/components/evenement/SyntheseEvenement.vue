@@ -1,5 +1,5 @@
 <template>
-  <q-card class="cardEvent">
+  <q-card class="cardEvent" @click="afficherDetail()">
     <q-card-section class="text-body2 bg-blue-grey-1">
       <q-icon class="q-mr-sm" name="today" />{{ evt_data.date_debut }}
       <q-icon class="q-mr-sm" name="schedule" />12:00
@@ -85,8 +85,26 @@
 <script setup lang="ts">
 import { type EvenementType } from 'src/types/evenements';
 import displayImgCategorie from 'src/components/ihm/LoadImgCategorie.vue';
+import { useRouter } from 'vue-router';
+import { evtStore } from 'src/stores/evenement';
+
 type EvtClass = EvenementType;
-defineProps<{ evt_data: EvtClass }>();
+const data = defineProps<{ evt_data: EvtClass }>();
+
+const evtModule = evtStore();
+
+const router = useRouter();
+
+//
+// fonction d'affichage de l'évènement sélectionné
+function afficherDetail() {
+  // on appel la page d'affichage de l'évènement
+  evtModule.setCurrentEvt(data.evt_data)
+  console.log('data', data.evt_data);
+  router.push({
+    name: 'detailEvenement',
+  });
+}
 </script>
 
 <style scoped>

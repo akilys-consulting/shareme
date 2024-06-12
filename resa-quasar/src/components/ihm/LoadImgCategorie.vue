@@ -16,7 +16,7 @@ function strNoAccent(chaine: string) {
 // a computed ref
 const getPathImg = computed(() => {
   const cat = JSON.parse(data.categorie);
-  return 'categories/' + strNoAccent(cat[0]).toLowerCase() + '.jpg';
+  return '/categories/' + strNoAccent(cat[0]).toLowerCase() + '.jpg';
 });
 </script>
 <style scoped>

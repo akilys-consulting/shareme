@@ -26,6 +26,16 @@ class EvenementController extends Controller
             $date = Carbon::createFromFormat('d/m/Y', $filtre['date'])->startOfDay();
             $query->where('date_debut','>', $date);
         }
+
+        if ($filtre['cat']){
+
+            $query->whereJsonContains('categories', $filtre['cat'][0]);
+    
+            for($i = 1; $i < count($filtre['cat']); $i++) {
+               $query->orWhereJsonContains('categories', $filtre['cat'][$i]);      
+            }
+
+        }
         $evenements = $query->get();
 
         return response()->json([
@@ -34,13 +44,7 @@ class EvenementController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -51,10 +55,9 @@ class EvenementController extends Controller
             'titre' => 'required',
         ]);
 
-        Evenements:create($request->all());
+        $evenement = Evenements::create($request->all());
 
-        return redirect()->route('Evenements.index')
-                         ->with('success', 'Evenement créé sans erreur');
+        return response()->json($evenement, 201);
     }
 
     /**

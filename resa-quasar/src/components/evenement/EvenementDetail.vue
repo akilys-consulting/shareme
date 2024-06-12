@@ -4,14 +4,11 @@
       <q-card-section class="text-body2 bg-blue-grey-1">
         <q-icon class="q-mr-sm" name="today" />{{ getDate }}
         <q-icon class="q-mr-sm" name="schedule" />{{ getTime }}
-
       </q-card-section>
-      <q-card-section horizontal>
-        <q-img class="q-mt-sm col-6 img-size" :src="getimageEvenement">
-          <div class="absolute-bottom card-image text-h7">
-            {{ evt_item.titre }}
-          </div>
-        </q-img>
+      <displayImgCategorie
+        :titre="evt_data.titre"
+        :categorie="evt_data.categories"
+      />
 
         <q-card-section>
           <div class="text-subtitle1">
@@ -19,57 +16,69 @@
               {{ getCategories }}
             </div>
             <div class="text-body2">
-              {{ getVille }}</div>
+              {{ getVille }}
+            </div>
           </div>
           <q-card-section class="text-body2">
             <div class="text-right">
-              <q-btn outline size="sm" class="q-mx-xs" round color="primary" icon="share" />
-              <q-btn outline size="sm" class="q-mx-xs" round color="primary" icon="euro" />
-              <q-btn outline size="sm" class="q-mx-xs" round color="primary" icon="people">
+              <q-btn
+                outline
+                size="sm"
+                class="q-mx-xs"
+                round
+                color="primary"
+                icon="share"
+              />
+              <q-btn
+                outline
+                size="sm"
+                class="q-mx-xs"
+                round
+                color="primary"
+                icon="euro"
+              />
+              <q-btn
+                outline
+                size="sm"
+                class="q-mx-xs"
+                round
+                color="primary"
+                icon="people"
+              >
                 <q-badge rounded transparent color="red" floating>4</q-badge>
               </q-btn>
             </div>
           </q-card-section>
         </q-card-section>
       </q-card-section>
-
     </q-card>
-
   </div>
 </template>
 
-
 <script setup lang="ts">
-
-import { onMounted, ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { date } from 'quasar'
-import { type EvenementType, type typePlanning } from 'src/types/evenements';
-import { getProgrammation } from 'src/api/evenement';
-import { evtStore } from 'src/stores/evenement'
-import {
-  K_storageImageEvent,
-  K_formatDateBase,
-  K_imgDefaut
-} from 'src/utils/config';
-
-
+import { onMounted, ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { date } from 'quasar';
+import { type EvenementType } from 'src/types/evenements';
+import displayImgCategorie from 'src/components/ihm/LoadImgCategorie.vue';
 
 // déclaration des paramètres d'entrée
 const props = defineProps<{
-  evt_item: EvenementType
-}>()
-const router = useRouter()
-const evtModule = evtStore()
+  evt_item: EvenementType;
+}>();
+
+const router = useRouter();
 
 // déclaration des variables
 //
-const planning = ref<typePlanning[]>([{ start: '', end: '', permanentDays: [] }]);
+const planning = ref<typePlanning[]>([
+  { start: '', end: '', permanentDays: [] },
+]);
 
 // actions faites au chargement du composant
 onMounted(async () => {
   await decodePlanning();
-})
+});
 
 const getimageEvenement = computed(() => {
   if (!props.evt_item.image) {
@@ -77,55 +86,59 @@ const getimageEvenement = computed(() => {
   } else {
     return props.evt_item.image;
   }
-})
+});
 
 const getDate = computed(() => {
   if (planning.value.length > 1) {
-
-    return date.formatDate(planning.value[1].start, 'dddd D MMMM YYYY')
+    return date.formatDate(planning.value[1].start, 'dddd D MMMM YYYY');
   } else {
-    return '... calcul...'
+    return '... calcul...';
   }
-})
+});
 
 const getTime = computed(() => {
-
   if (planning.value.length > 1) {
-    return date.formatDate(planning.value[1].start, 'HH[:]mm')
+    return date.formatDate(planning.value[1].start, 'HH[:]mm');
   } else {
-    return '... calcul...'
+    return '... calcul...';
   }
-})
+});
 
 const getCategories = computed(() => {
   if (props.evt_item.categories) {
-    return props.evt_item.categories.toString()
+    return props.evt_item.categories.toString();
   } else {
-    return ''
+    return '';
   }
-})
+});
 
 const getVille = computed(() => {
-  if (props.evt_item.adresse.value && props.evt_item.adresse.value.adr.length > 0) {
-    return props.evt_item.adresse.value.adr
-  } else return 'Pas de lieu défini'
-}
-)
+  if (
+    props.evt_item.adresse.value &&
+    props.evt_item.adresse.value.adr.length > 0
+  ) {
+    return props.evt_item.adresse.value.adr;
+  } else return 'Pas de lieu défini';
+});
 
 async function decodePlanning() {
   // on récupère la programmation
-  console.log('result', props.evt_item.id)
+  console.log('result', props.evt_item.id);
   const result = await getProgrammation({ evenementId: props.evt_item.id });
-  console.log('result', result)
+  console.log('result', result);
   if (result.status) {
     const programmation = result.data;
     if (programmation && programmation.length > 0) {
       programmation.forEach((prog: any) => {
-        console.log('prog', prog)
+        console.log('prog', prog);
         var currentDate = date.extractDate(prog.datedebut, K_formatDateBase);
-        let finDate = date.addToDate(date.extractDate(prog.datefin, K_formatDateBase), { hours: 2 });
+        let finDate = date.addToDate(
+          date.extractDate(prog.datefin, K_formatDateBase),
+          { hours: 2 }
+        );
 
-        if (prog.datefin) finDate = date.extractDate(prog.datefin, K_formatDateBase);
+        if (prog.datefin)
+          finDate = date.extractDate(prog.datefin, K_formatDateBase);
 
         let guard = 0;
         // gestion perticulière sur une porgrammation permanente
@@ -139,7 +152,10 @@ async function decodePlanning() {
             });
             guard = 5000;
           } else {
-            while (date.getDateDiff(currentDate, finDate) <= 0 && guard++ <= 4000) {
+            while (
+              date.getDateDiff(currentDate, finDate) <= 0 &&
+              guard++ <= 4000
+            ) {
               // creation de l'évènement
               planning.value.push({
                 start: date.formatDate(currentDate, 'YYYY-MM-DD HH:mm'),
@@ -149,13 +165,11 @@ async function decodePlanning() {
               // le type weeks n'existe pas dans la fonction date.addToDate
               // on transforme le type weeks en days
               if (prog.type === 'weeks') {
-                currentDate = date.addToDate(currentDate, { 'days': 7 });
+                currentDate = date.addToDate(currentDate, { days: 7 });
               } else {
                 currentDate = date.addToDate(currentDate, { [prog.type]: 1 });
               }
-
             }
-
           }
         }
       });
@@ -166,15 +180,12 @@ async function decodePlanning() {
 // fonction d'affichage de l'évènement sélectionné
 function afficherDetail() {
   // on charge l'évènement à afficher
-  evtModule.setCurrentEvt(props.evt_item)
+  evtModule.setCurrentEvt(props.evt_item);
   // on appel la page d'affichage de l'évènement
   router.push({
-    name: 'evt_detail'
+    name: 'detailevt',
   });
-
 }
-
-
 </script>
 
 <style scoped>
@@ -195,6 +206,6 @@ function afficherDetail() {
 }
 
 .card-image {
-  background: rgba(0, 0, 0, 0.30);
+  background: rgba(0, 0, 0, 0.3);
 }
 </style>
