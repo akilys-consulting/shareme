@@ -1,5 +1,8 @@
 import { type stringNullable, type adresseListObject } from 'src/types/general';
-import { type ProgrammationType } from 'src/types/programmation_evt';
+import {
+  type ProgrammationType,
+  programmationParDefaut,
+} from 'src/types/programmation_evt';
 
 export type periode = 'days' | 'weeks' | 'months' | '*';
 
@@ -10,6 +13,10 @@ export interface categorie {
   color: string;
 }
 
+export interface auteur {
+  id: number;
+  nom: string;
+}
 export interface filterEventType {
   date: string;
   cat: categoriesType;
@@ -22,12 +29,9 @@ export interface EvenementType {
   description?: string;
   url?: string;
   adresse: adresseListObject;
-  auteurid?: number;
+  auteurId: auteur;
   categories?: categorie[];
-  recurrence_set: boolean;
-  date_debut: Date;
-  date_fin: Date;
-  recurrence?: ProgrammationType;
+  programmation: ProgrammationType[];
   actif: boolean;
 }
 
@@ -56,8 +60,7 @@ export const evenementVide = {
     },
   },
   description: '',
-  recurrence_set: false,
-  date_Debut: Date.now(),
-  date_fin: Date.now(),
+  programmation: programmationParDefaut,
   actif: false,
+  auteurId: null,
 };

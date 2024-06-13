@@ -1,7 +1,8 @@
 <template>
   <q-header class="bg-white q-py-md text-primary text-color">
     <q-toolbar flat class="q-mr-sm">
-      ShareMe{{ connected }}<q-separator />
+      <q-toolbar-title>ShareMe<q-separator /></q-toolbar-title>
+
       <q-toolbar-title class="text-center">
         <q-tabs v-model="tab" class="text-teal">
           <q-btn
@@ -54,9 +55,10 @@
             color="red"
             class="q-pa-sm q-ma-sm item_menu"
           />
-        </q-tabs>
-      </q-toolbar-title>
-      {{ dateJour }} <q-separator />
+        </q-tabs> </q-toolbar-title
+      ><q-toolbar-title class="text-right"
+        >{{ dateJour }} <q-separator
+      /></q-toolbar-title>
     </q-toolbar>
   </q-header>
 </template>
@@ -70,16 +72,11 @@ import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-import { evenementVide } from 'src/types/evenements';
-
 import { ihmStore } from 'src/stores/ihm';
 const IhmModule = ihmStore();
 
 import { userStore } from 'src/stores/users';
 const userModule = userStore();
-
-import { evtStore } from 'src/stores/evenement';
-const evtModule = evtStore();
 
 import { logout } from 'src/api/users';
 
@@ -88,6 +85,7 @@ const dateJour = ref<string>();
 const tab = ref('home');
 
 onMounted(() => {
+  userModule.refreshConnected();
   console.log('state', connected);
   // recupération de la date
   const timeStamp = Date.now();
@@ -115,7 +113,7 @@ async function deconnecter() {
 }
 
 function ajouterEvenement() {
-  evtModule.setCurrentEvt(evenementVide);
+  //evtModule.setCurrentEvt(evenementVide);
   router.push({
     name: 'ajoutEvenement',
   });

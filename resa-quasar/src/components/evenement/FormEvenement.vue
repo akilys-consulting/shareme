@@ -19,11 +19,10 @@
           </template>
         </q-btn-toggle>
       </div>
-      <!--
+
       <div class="q-py-md">
-        <programmation />
+        <programmation :progEvt="progEvt" />
       </div>
--->
       <q-form class="q-gutter-md">
         <div class="q-pt-md row">
           <div class="col-6 q-pr-md">
@@ -32,18 +31,9 @@
               label="Nom évènement*"
               counter
               maxlength="50"
-              hint="Name and surname"
+              hint="titre de l'activité"
               lazy-rules
-              :rules="[
-                (val) => (val && val.length > 0) || 'Please type something',
-              ]"
-            />
-          </div>
-          <div class="col-6">
-            <q-select
-              v-model="modelValue.auteurid"
-              :options="lstOrganisateur"
-              label="Organisateur"
+              :rules="[(val) => (val && val.length > 0) || 'champ oblogatoire']"
             />
           </div>
           <div class="col-12 q-pt-md">
@@ -64,6 +54,7 @@
             />
           </div>
         </div>
+        <!-- saisi adresse de l'évènement -->
         <adrManagement v-model="modelValue.adresse" />
 
         <div class="text-subtitle1">Description</div>
@@ -89,26 +80,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { type EvenementType, type categoriesType } from 'src/types/evenements';
-import { type UserType } from 'src/types/users';
 import adrManagement from 'src/components/ihm/AdrManagementgouv.vue';
+import programmation from 'src/components/evenement/ProgrammationEvt.vue';
 
 import { evtStore } from 'src/stores/evenement';
 const evtModule = evtStore();
 
-import { userStore } from 'src/stores/users';
-const userModule = userStore();
-
 const modelValue = ref<EvenementType>(evtModule.getCurrentEvt);
-
-onMounted(() => {
-  const user: UserType = userModule.getUserConnected;
-  const auteur: UserType = { name: user.name, id: user.id };
-});
-
+const progEvt = modelValue.value.programmation;
 const listCategories = ref<categoriesType>(['randonnée', 'théatre', 'sortie']);
-const lstOrganisateur = ref(['paul', 'pierre', 'jacques']);
 const actif = ref('');
 
 const getStaetColor = computed(() => {

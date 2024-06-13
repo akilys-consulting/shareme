@@ -13,7 +13,7 @@ import { type UserType } from 'src/types/users';
 import { defineStore } from 'pinia';
 
 export const userStore = defineStore('connexion', () => {
-  const connected = ref(false);
+  const connected = ref(getCookieUser().token ? true : false);
   const userConnected = ref<UserType>();
   //
   // vrai si utilisateur à un token
@@ -24,6 +24,9 @@ export const userStore = defineStore('connexion', () => {
   //
   // récupération de l'utilisateur connecté
   const getUserConnected = computed(() => {
+    if (typeof userConnected.value == 'undefined') {
+      setUserConnected();
+    }
     return userConnected;
   });
 
@@ -38,6 +41,7 @@ export const userStore = defineStore('connexion', () => {
   }
   return {
     connected,
+    userConnected,
     refreshConnected,
     setUserConnected,
     getIsConnected,

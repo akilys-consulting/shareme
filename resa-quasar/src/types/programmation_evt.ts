@@ -1,11 +1,11 @@
+import { date } from 'quasar';
 
 export const K_typeProgrammation = [
-  { value: 'days', text: 'journalier' },
-  { value: 'weeks', text: 'hebdomadaire' },
-  { value: 'months', text: 'mensuel' },
-  { value: '*', text: 'permanent' },
+  { value: 'days', label: 'journalier' },
+  { value: 'weeks', label: 'hebdomadaire' },
+  { value: 'months', label: 'mensuel' },
+  { value: '*', label: 'permanent' },
 ];
-
 
 export const typeProgrammation = [
   'journalier',
@@ -20,5 +20,13 @@ export interface ProgrammationType {
   datedebut: string;
   datefin: string;
   jours?: string[];
-  evenementid: number;
 }
+
+export const programmationParDefaut = [
+  {
+    id: null,
+    type: K_typeProgrammation[0].value,
+    datedebut: date.formatDate(Date.now(), 'DD/MM/YYYY HH:mm'),
+    dateFin: date.formatDate(Date.now(), 'DD/MM/YYYY HH:mm'),
+  },
+];
