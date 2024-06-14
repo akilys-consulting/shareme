@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Evenement;
+use App\Models\viewEvenement;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -17,7 +18,7 @@ class EvenementController extends Controller
 
         $filtre = $request->input('filtre');
 
-        $query = Evenement::query();
+        $query = viewEvenement::query();
 
         if ($filtre['search']) {
             $query->whereRaw('UPPER(titre) LIKE ?', ['%' . strtoupper($filtre['search']) . '%']);

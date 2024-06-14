@@ -4,6 +4,7 @@
     label="Evènement récurrent"
     left-label
   />
+
   <q-table
     hide-pagination
     style="min-width: 600px"
@@ -19,7 +20,7 @@
     <template v-slot:body="props">
       <q-tr :props="props">
         <q-td key="type" :props="props">
-          <q-select :options="K_typeProgrammation" v-model="props.row.type">
+          <q-select :options="listtypeProgrammation" v-model="props.row.type">
           </q-select>
         </q-td>
         <q-td key="datedebut" :props="props">
@@ -125,7 +126,7 @@
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
             <q-time
               v-model="programmation[0].datedebut"
-              mask="DD-MM-YYYY HH:mm"
+              mask="DD/MM/YYYY HH:mm"
               format24h
             >
               <div class="row items-center justify-end">
@@ -157,13 +158,11 @@ const columns = [
   { name: 'datefin', label: 'date fin', field: 'datefin', align: 'left' },
 ];
 
-//
-// stokage de la programmation lue de la base de donnéesM@toine2503Enac
-
 //const typeProgrammation = K_typeProgrammation;
 const activeProgrammation = ref(false);
 const programmation = ref(props.progEvt);
 
+const listtypeProgrammation = ref(K_typeProgrammation);
 onMounted(() => {
   // on identifie si il y a une prgrammation
   if (typeof props.progEvt[0] != 'undefined') {

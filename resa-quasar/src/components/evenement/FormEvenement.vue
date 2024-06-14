@@ -1,10 +1,10 @@
 <template>
   <q-card flat>
     <div class="q-pa-lg">
-      <div class="col col-12">
+      <div v-if="isPro" class="col col-12">
         <q-btn-toggle
           v-model="modelValue.actif"
-          :toggle-color="getStaetColor"
+          :toggle-color="getEtatEvenement"
           :options="[
             { label: 'En ligne', value: true, slot: 'actif' },
             { label: 'Hors ligne', value: false, slot: 'inactif' },
@@ -19,7 +19,13 @@
           </template>
         </q-btn-toggle>
       </div>
-
+      <div class="q-py-md">
+        <gestionImage
+          v-if="isPro"
+          modelValue:modelValue.image
+          :path="K_cheminImage"
+        ></gestionImage>
+      </div>
       <div class="q-py-md">
         <programmation :progEvt="progEvt" />
       </div>
@@ -65,7 +71,7 @@
         />
 
         <div>
-          <q-btn label="Valider" type="submit" color="primary" />
+          <q-btn label="Valider" @click="saveEvenement" color="primary" />
           <q-btn
             label="Annuler"
             type="reset"
@@ -84,18 +90,28 @@ import { ref, computed } from 'vue';
 import { type EvenementType, type categoriesType } from 'src/types/evenements';
 import adrManagement from 'src/components/ihm/AdrManagementgouv.vue';
 import programmation from 'src/components/evenement/ProgrammationEvt.vue';
-
+import gestionImage from 'src/components/ihm/ManageImage.vue';
 import { evtStore } from 'src/stores/evenement';
 const evtModule = evtStore();
 
-const modelValue = ref<EvenementType>(evtModule.getCurrentEvt);
-const progEvt = modelValue.value.programmation;
-const listCategories = ref<categoriesType>(['randonnée', 'théatre', 'sortie']);
-const actif = ref('');
+import { userStore } from 'src/stores/users';
+const userModule = userStore();
+const K_cheminImage = '/images/evenements/';
 
-const getStaetColor = computed(() => {
-  return actif.value ? 'green' : 'red';
+const modelValue = ref(evtModule.getCurrentEvt);
+const progEvt = modelValue.value.recurrence;
+const listCategories = ref<categoriesType>(['randonnée', 'théatre', 'sortie']);
+const isPro = ref(userModule.getIsPro);
+
+const getEtatEvenement = computed(() => {
+  return modelValue.value.actif ? 'green' : 'red';
 });
+
+//
+// sauvegarde de l'évènement
+function saveEvenement() {
+  console.log('prog', progRef.value.getNouvelleProg());
+}
 </script>
 <style>
 .slider_participants {

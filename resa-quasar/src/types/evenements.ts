@@ -9,8 +9,10 @@ export type periode = 'days' | 'weeks' | 'months' | '*';
 export type categoriesType = string[];
 
 export interface categorie {
-  text: string;
-  color: string;
+  id: number;
+  titre: string;
+  path: string;
+  actif: boolean;
 }
 
 export interface auteur {
@@ -29,10 +31,13 @@ export interface EvenementType {
   description?: string;
   url?: string;
   adresse: adresseListObject;
-  auteurId: auteur;
+  auteur: auteur;
   categories?: categorie[];
-  programmation: ProgrammationType[];
+  recurrence: ProgrammationType[];
   actif: boolean;
+  event_id?: number;
+  image?: string;
+  nb_personnes?: number;
 }
 
 export interface PlanningType {
@@ -60,7 +65,7 @@ export const evenementVide = {
     },
   },
   description: '',
-  programmation: programmationParDefaut,
+  recurrence: programmationParDefaut,
   actif: false,
-  auteurId: null,
+  auteur: null,
 };

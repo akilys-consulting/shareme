@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class evenement extends Model
+class viewEvenement extends Model
 {
     use HasFactory;
 
-    
-    protected $table = 'evenements';
+    protected $table = 'listevenements';
 
     protected $fillable = [
         'titre',
@@ -24,6 +23,5 @@ class evenement extends Model
         'url',
         'image',
         'nb_personnes',
-        'actif'
     ];
 }

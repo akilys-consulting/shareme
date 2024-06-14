@@ -21,6 +21,10 @@ export const userStore = defineStore('connexion', () => {
   const getIsConnected = computed(() => {
     return connected.value;
   });
+
+  const getIsPro = computed(() => {
+    return userConnected.value?.pro;
+  });
   //
   // récupération de l'utilisateur connecté
   const getUserConnected = computed(() => {
@@ -46,5 +50,6 @@ export const userStore = defineStore('connexion', () => {
     setUserConnected,
     getIsConnected,
     getUserConnected,
+    getIsPro,
   };
 });

@@ -10,7 +10,6 @@
 import ajoutEvenement from 'src/components/evenement/FormEvenement.vue';
 
 import { onBeforeMount, onBeforeUpdate } from 'vue';
-import { storeToRefs } from 'pinia';
 
 import { evtStore } from 'src/stores/evenement';
 const evtModule = evtStore();
@@ -24,7 +23,7 @@ onBeforeMount(() => {
   //
   // on renseigne l'auteur qui est le user connecté
   const userData = userModule.getUserConnected;
-  evenementVide.auteurId = userData.value.id;
+  evenementVide.auteur = { id: userData.value.id, nom: userData.value.name };
 
   evtModule.setCurrentEvt(evenementVide);
   console.log('onBeforeMount');

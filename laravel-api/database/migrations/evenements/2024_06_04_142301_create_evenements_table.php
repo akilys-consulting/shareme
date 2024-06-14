@@ -15,16 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('titre');
             $table->text('description');
-            $table->boolean('reccurence_set')->default(false);
             $table->json('recurrence');
             $table->json('adresse');
             $table->string('url');
-            $table->datetime('date_debut');
-            $table->datetime('date_fin');
             $table->json('categories');
-            $table->unsignedBigInteger('auteur_id');
+            $table->unsignedBigInteger('event_id');
+            $table->json('auteur');
             $table->boolean('actif')->default(false);
-            $table->foreign('auteur_id')->references('id')->on('users');
+            $table->foreign('event_id')->references('id')->on('evenements');           
         });
     }
 
