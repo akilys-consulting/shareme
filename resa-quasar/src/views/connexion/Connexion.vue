@@ -64,13 +64,12 @@
               />
             </div>
             <div class="col-4">
-              <q-btn
-                flat
-                class="float-right"
-                no-caps
-                label="connexion google"
-                @click="loginWithGoogle"
-              />
+              <q-btn @click="loginWithGoogle" no-caps flat class="float-left">
+                <q-avatar size="22px">
+                  <img src="/icons/google_cnx.png" />
+                </q-avatar>
+                Se connecter avec google
+              </q-btn>
             </div>
           </div>
         </div>
