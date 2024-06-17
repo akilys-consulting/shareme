@@ -40,6 +40,7 @@ export const getCookieUser = () => {
 };
 export const setCookieUser = (user: UserType) =>
   Cookies.set(userKey, JSON.stringify(user));
+
 export const removeCookieUser = () => Cookies.remove(userKey);
 
 //

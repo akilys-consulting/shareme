@@ -3,10 +3,10 @@ import { K_storageImageEvent } from 'src/utils/config';
 import { type ApiType } from 'src/api/api_types';
 import { type imageUpload } from 'scr/types/ihm';
 
-import { getToken } from 'src/utils/cookie';
+import { getTokenCnx } from 'src/utils/cookie';
 
 function getAuthToken() {
-  const token = getToken;
+  const token = getTokenCnx;
   return {
     Authorization: 'Bearer ' + token,
   };
@@ -39,6 +39,6 @@ export const supprimeImage = async (image: imageUpload): Promise<ApiType> => {
     method: 'POST',
     body: formdata,
   });
-  const response = await request.data();
+  await request.data();
   return { status: true, message: 'test' };
 };

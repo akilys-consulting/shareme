@@ -67,5 +67,5 @@ export const evenementVide = {
   description: '',
   recurrence: programmationParDefaut,
   actif: false,
-  auteur: null,
+  auteur: { id: null, nom: '' },
 };

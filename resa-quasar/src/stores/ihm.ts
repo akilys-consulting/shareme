@@ -3,9 +3,8 @@ import { defineStore } from 'pinia';
 import { setFilterEVt, getFilterEVt } from 'src/utils/cookie';
 
 import { i18n } from 'src/boot/i18n';
-import { Notify,Loading,QSpinnerGrid } from 'quasar';
+import { Notify, Loading, QSpinnerGrid } from 'quasar';
 import { type filterEventType } from 'src/types/evenements';
-
 
 interface messageType {
   display?: boolean;
@@ -71,7 +70,6 @@ export const ihmStore = defineStore('ihm', () => {
     return data.cat.length != 0 ? true : false;
   }
 
-
   function setDisplayMenuOff() {
     displayMenu.value = false;
   }
@@ -85,7 +83,6 @@ export const ihmStore = defineStore('ihm', () => {
     message.value.code = messageData.code;
   }
 
-
   function setDisplayMessage() {
     message.value.display = true;
   }
@@ -94,7 +91,7 @@ export const ihmStore = defineStore('ihm', () => {
     setMessage(messageData);
     Notify.create({
       type: 'positive',
-      color: 'blue-grey-3',
+      color: 'red-3',
       message: i18n.global.t('message.' + message.value.code, {
         PARAM: message.value.param,
       }),
@@ -114,27 +111,26 @@ export const ihmStore = defineStore('ihm', () => {
     });
   }
 
-  function startWaiting () {
-
+  function startWaiting() {
     Loading.show({
       spinner: QSpinnerGrid,
       spinnerColor: 'cyan',
       spinnerSize: 140,
       backgroundColor: 'rgba(94, 26, 26, 0.178)',
       message: 'Action en cours...',
-      messageColor: '#a7293e'
-    })
+      messageColor: '#a7293e',
+    });
   }
 
-  function stopWaiting () {
-    Loading.hide()
+  function stopWaiting() {
+    Loading.hide();
   }
 
   return {
     displayFilter,
     dataFilter,
     message,
-     getWaiting,
+    getWaiting,
     getMessage,
     getDisplayMenu,
     setMessage,

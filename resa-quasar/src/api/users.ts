@@ -2,7 +2,13 @@ import { api } from 'boot/axios';
 
 import { type ApiType, type connexionType } from 'src/api/api_types';
 import { type UserType } from 'src/types/users';
-import { setCookieUser, getTokenCnx, removeTokenCnx } from 'src/utils/cookie';
+import {
+  setCookieUser,
+  removeCookieUser,
+  getTokenCnx,
+  removeTokenCnx,
+  getCookieUser,
+} from 'src/utils/cookie';
 
 //
 // création d'un compte utilisateur
@@ -56,11 +62,11 @@ export const API_demandeModifierMdp = async (data: {
   email: string;
 }): Promise<ApiType> => {
   try {
-    const token = getTokenCnx();
+    const user = getCookieUser();
     const request = await api.post(
       'forgot-password',
       { email: data.email },
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${user.token}` } }
     );
     if (request.status === 200) {
       // lecture du retour
@@ -118,15 +124,19 @@ export const API_EnvoimodifierMdp = async (
 //
 export const logout = async () => {
   try {
-    const token = getTokenCnx();
+    const user = getCookieUser();
     const request = await api.post(
       '/logout',
       {},
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${user.token}` } }
     );
     const response = await request.data;
-    // suppresion du token
+
+    // suppresion du cookie user
+    removeCookieUser();
+    // suppresssion du token de connexion
     removeTokenCnx();
+
     return response;
   } catch (error) {
     return { status: false, message: (error as Error).message };
