@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Casts\Json;
 
 class evenement extends Model
 {
@@ -11,6 +12,10 @@ class evenement extends Model
 
     
     protected $table = 'evenements';
+
+    protected $casts = [
+        'auteur' => Json::class,
+    ];
 
     protected $fillable = [
         'titre',

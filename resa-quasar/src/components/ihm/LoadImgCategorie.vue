@@ -7,16 +7,27 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
-const data = defineProps({ categorie: [], titre: String });
+import { categoriesType } from 'src/types/evenements';
+const data = defineProps<{
+  categorieTab: categoriesType;
+  titre?: string;
+}>();
 
 function strNoAccent(chaine: string) {
   return chaine.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-// a computed ref
+// On récupère la première catégorie pour définir l'image
+// si pas de categorie => image inconnue
 const getPathImg = computed(() => {
-  const cat = JSON.parse(data.categorie);
-  return '/categories/' + strNoAccent(cat[0]).toLowerCase() + '.jpg';
+  let pathImage = '';
+  if (typeof data.categorieTab != 'undefined' && data.categorieTab.length > 0) {
+    pathImage =
+      '/categories/' + strNoAccent(data.categorieTab[0]).toLowerCase() + '.jpg';
+  } else {
+    pathImage = '/icons/image_inconnue.png';
+  }
+  return pathImage;
 });
 </script>
 <style scoped>

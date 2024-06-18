@@ -3,12 +3,12 @@ import { K_storageImageEvent } from 'src/utils/config';
 import { type ApiType } from 'src/api/api_types';
 import { type imageUpload } from 'scr/types/ihm';
 
-import { getTokenCnx } from 'src/utils/cookie';
+import { getCookieUser } from 'src/utils/cookie';
 
 function getAuthToken() {
-  const token = getTokenCnx;
+  const user = getCookieUser;
   return {
-    Authorization: 'Bearer ' + token,
+    Authorization: 'Bearer ' + user.token,
   };
 }
 

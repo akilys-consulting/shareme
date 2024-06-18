@@ -27,6 +27,6 @@ export const programmationParDefaut = [
     id: null,
     type: K_typeProgrammation[0].value,
     datedebut: date.formatDate(Date.now(), 'DD/MM/YYYY HH:mm'),
-    dateFin: date.formatDate(Date.now(), 'DD/MM/YYYY HH:mm'),
+    datefin: date.formatDate(Date.now(), 'DD/MM/YYYY HH:mm'),
   },
 ];

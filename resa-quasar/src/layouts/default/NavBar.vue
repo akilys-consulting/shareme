@@ -1,62 +1,62 @@
 <template>
   <q-header class="bg-white q-py-md text-primary text-color">
     <q-toolbar flat class="q-mr-sm">
-      <q-toolbar-title>ShareMe<q-separator /></q-toolbar-title>
+      <q-toolbar-title class="text-subtitle1"
+        >ShareMe<q-separator
+      /></q-toolbar-title>
 
       <q-toolbar-title class="text-center">
-        <q-tabs v-model="tab" class="text-teal">
-          <q-btn
-            name="home"
-            flat
-            icon="home"
-            label="accueil"
-            :to="{ name: 'accueil' }"
-            class="q-pa-sm q-ma-sm item_menu"
-          />
-          <q-btn
-            name="profil"
-            flat
-            icon="record_voice_over"
-            color="green"
-            class="q-pa-sm q-ma-sm"
-            v-if="connected"
-            label="Profil"
-          >
-            <q-menu>
-              <q-list style="min-width: 100px">
-                <q-item clickable v-close-popup @click="deconnecter">
-                  <q-item-section avatar>
-                    <q-icon color="red" name="logout" />
-                  </q-item-section>
-                  <q-item-section>Déconnexion</q-item-section>
-                </q-item>
-                <q-item clickable v-close-popup @click="ajouterEvenement">
-                  <q-item-section avatar>
-                    <q-icon color="primary" name="post_add" />
-                  </q-item-section>
-                  <q-item-section>ajout évènement</q-item-section>
-                </q-item>
-                <q-item clickable v-close-popup>
-                  <q-item-section avatar>
-                    <q-icon color="primary" name="badge" />
-                  </q-item-section>
-                  <q-item-section>Profil</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
-          <q-btn
-            name="profil"
-            flat
-            label="Profil"
-            v-else
-            :to="{ name: 'connexion' }"
-            icon="voice_over_off"
-            color="red"
-            class="q-pa-sm q-ma-sm item_menu"
-          />
-        </q-tabs> </q-toolbar-title
-      ><q-toolbar-title class="text-right"
+        <q-btn
+          name="home"
+          flat
+          icon="home"
+          label="accueil"
+          :to="{ name: 'accueil' }"
+          class="q-pa-sm q-ma-sm item_menu"
+        />
+        <q-btn
+          name="profil"
+          flat
+          icon="record_voice_over"
+          color="green"
+          class="q-pa-sm q-ma-sm"
+          v-if="connected"
+          label="Profil"
+        >
+          <q-menu>
+            <q-list style="min-width: 100px">
+              <q-item clickable v-close-popup @click="deconnecter">
+                <q-item-section avatar>
+                  <q-icon color="red" name="logout" />
+                </q-item-section>
+                <q-item-section>Déconnexion</q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup @click="ajouterEvenement">
+                <q-item-section avatar>
+                  <q-icon color="primary" name="post_add" />
+                </q-item-section>
+                <q-item-section>ajout évènement</q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup>
+                <q-item-section avatar>
+                  <q-icon color="primary" name="badge" />
+                </q-item-section>
+                <q-item-section>Profil</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
+        <q-btn
+          name="profil"
+          flat
+          label="Profil"
+          v-else
+          :to="{ name: 'connexion' }"
+          icon="voice_over_off"
+          color="red"
+          class="q-pa-sm q-ma-sm item_menu"
+        /> </q-toolbar-title
+      ><q-toolbar-title class="text-subtitle1 text-right"
         >{{ dateJour }} <q-separator
       /></q-toolbar-title>
     </q-toolbar>

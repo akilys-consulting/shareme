@@ -1,18 +1,19 @@
 <template>
   <q-card class="cardEvent" @click="afficherDetail()">
     <q-card-section class="text-body2 bg-blue-grey-1">
-      <q-icon class="q-mr-sm" name="today" />{{ evt_data.date_debut }}
+      <!--<q-icon class="q-mr-sm" name="today" />{{ evt_data.date_debut }}-->
       <q-icon class="q-mr-sm" name="schedule" />12:00
     </q-card-section>
     <q-card-section horizontal>
       <displayImgCategorie
         :titre="evt_data.titre"
-        :categorie="evt_data.categories"
+        class="q-mr-md"
+        :categorieTab="evt_data.categories"
       />
       <q-card-section>
         <div class="text-subtitle1">
           <div class="ms-4 text-orange-14 rox">
-            {{ evt_data.categories }}
+            {{ convertCategorie }}
           </div>
           <div class="text-body2">Toulouse</div>
         </div>
@@ -23,6 +24,15 @@
     </q-card-section>
     <q-card-section class="text-body2">
       <div class="text-right">
+        <q-btn
+          outline
+          size="sm"
+          class="q-mx-xs"
+          round
+          v-if="addActivites"
+          color="primary"
+          icon="group_add"
+        />
         <q-btn
           outline
           size="sm"
@@ -83,23 +93,32 @@
   </q-card>-->
 </template>
 <script setup lang="ts">
+import { computed } from 'vue';
 import { type EvenementType } from 'src/types/evenements';
 import displayImgCategorie from 'src/components/ihm/LoadImgCategorie.vue';
 import { useRouter } from 'vue-router';
 import { evtStore } from 'src/stores/evenement';
-
-type EvtClass = EvenementType;
-const data = defineProps<{ evt_data: EvtClass }>();
-
 const evtModule = evtStore();
+
+import { userStore } from 'src/stores/users';
+const userModule = userStore();
+
+const data = defineProps<{ evt_data: EvenementType }>();
 
 const router = useRouter();
 
+const convertCategorie = computed(() => {
+  return data.evt_data.categories.toString();
+});
+
+const addActivites = computed(() => {
+  return userModule.getIsConnected;
+});
 //
 // fonction d'affichage de l'évènement sélectionné
 function afficherDetail() {
   // on appel la page d'affichage de l'évènement
-  evtModule.setCurrentEvt(data.evt_data)
+  evtModule.setCurrentEvt(data.evt_data);
   console.log('data', data.evt_data);
   router.push({
     name: 'detailEvenement',

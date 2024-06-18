@@ -114,7 +114,7 @@ export const ihmStore = defineStore('ihm', () => {
   function startWaiting() {
     Loading.show({
       spinner: QSpinnerGrid,
-      spinnerColor: 'cyan',
+      spinnerColor: 'red-5',
       spinnerSize: 140,
       backgroundColor: 'rgba(94, 26, 26, 0.178)',
       message: 'Action en cours...',

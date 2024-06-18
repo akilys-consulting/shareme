@@ -1,4 +1,4 @@
-import { type stringNullable, type adresseListObject } from 'src/types/general';
+import { type adresseListObject } from 'src/types/general';
 import {
   type ProgrammationType,
   programmationParDefaut,
@@ -7,13 +7,6 @@ import {
 export type periode = 'days' | 'weeks' | 'months' | '*';
 
 export type categoriesType = string[];
-
-export interface categorie {
-  id: number;
-  titre: string;
-  path: string;
-  actif: boolean;
-}
 
 export interface auteur {
   id: number;
@@ -25,6 +18,21 @@ export interface filterEventType {
   search: string;
 }
 
+export interface API_EvenementType {
+  id: number;
+  titre: string;
+  description?: string;
+  url?: string;
+  adresse: string;
+  auteur: string;
+  categories: string;
+  recurrence: string;
+  actif: boolean;
+  event_id?: number;
+  image?: string;
+  nb_personnes?: number;
+}
+
 export interface EvenementType {
   id: number;
   titre: string;
@@ -32,7 +40,7 @@ export interface EvenementType {
   url?: string;
   adresse: adresseListObject;
   auteur: auteur;
-  categories?: categorie[];
+  categories: categoriesType;
   recurrence: ProgrammationType[];
   actif: boolean;
   event_id?: number;
@@ -51,8 +59,8 @@ export interface typePlanning {
   permanentDays?: string[];
 }
 
-export const evenementVide = {
-  id: null,
+export const evenementVide: EvenementType = {
+  id: -1,
   titre: 'Nouveau titre',
   adresse: {
     data: '',
@@ -64,8 +72,9 @@ export const evenementVide = {
       },
     },
   },
+  categories: [],
   description: '',
   recurrence: programmationParDefaut,
   actif: false,
-  auteur: { id: null, nom: '' },
+  auteur: { id: -1, nom: '' },
 };
