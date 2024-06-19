@@ -10,7 +10,7 @@ export type categoriesType = string[];
 
 export interface auteur {
   id: number;
-  nom: string;
+  name: string;
 }
 export interface filterEventType {
   date: string;

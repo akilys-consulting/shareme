@@ -1,6 +1,7 @@
 import { type filterEventType } from 'src/types/evenements';
 import { Cookies } from 'quasar';
 import { type UserType, defaultUser } from 'src/types/users';
+import { type EvenementType, evenementVide } from 'src/types/evenements';
 
 // App
 const sidebarStatusKey = 'sidebar_status';
@@ -55,3 +56,15 @@ export const getFilterEVt = (): filterEventType => {
   return reponse;
 };
 export const removeFilterEvt = () => Cookies.remove(FilterKey);
+//
+// cookie sur evènement
+const currentEVtKey = 'resa4AllEvtCurrent';
+export const setCurrentEvt = (evenementData: EvenementType) =>
+  Cookies.set(currentEVtKey, JSON.stringify(evenementData));
+
+export const getCurrentEvt = (): EvenementType => {
+  let reponse: EvenementType = evenementVide;
+  if (Cookies.has(currentEVtKey)) reponse = Cookies.get(currentEVtKey);
+  return reponse;
+};
+export const removeCurrentEvt = () => Cookies.remove(currentEVtKey);

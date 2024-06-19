@@ -1,16 +1,15 @@
 <template>
   <q-card class="cardEvent" @click="afficherDetail()">
-    <q-card-section class="text-body2 bg-blue-grey-1">
+    <q-card-section vertical class="text-body2 bg-blue-grey-1">
       <!--<q-icon class="q-mr-sm" name="today" />{{ evt_data.date_debut }}-->
       <q-icon class="q-mr-sm" name="schedule" />12:00
     </q-card-section>
     <q-card-section horizontal>
       <displayImgCategorie
         :titre="evt_data.titre"
-        class="q-mr-md"
         :categorieTab="evt_data.categories"
       />
-      <q-card-section>
+      <q-card-section class="q-ml-lg">
         <div class="text-subtitle1">
           <div class="ms-4 text-orange-14 rox">
             {{ convertCategorie }}
@@ -18,8 +17,10 @@
           <div class="text-body2">Toulouse</div>
         </div>
         <q-card-section>
-          <div class="text-h8 col-12">{{ evt_data.description }}</div>
-        </q-card-section>
+          <div class="text-h8 col-12">
+            {{ evt_data.description }}
+          </div></q-card-section
+        >
       </q-card-section>
     </q-card-section>
     <q-card-section class="text-body2">
@@ -97,8 +98,8 @@ import { computed } from 'vue';
 import { type EvenementType } from 'src/types/evenements';
 import displayImgCategorie from 'src/components/ihm/LoadImgCategorie.vue';
 import { useRouter } from 'vue-router';
-import { evtStore } from 'src/stores/evenement';
-const evtModule = evtStore();
+
+import { setCurrentEvt } from 'src/utils/cookie';
 
 import { userStore } from 'src/stores/users';
 const userModule = userStore();
@@ -118,7 +119,7 @@ const addActivites = computed(() => {
 // fonction d'affichage de l'évènement sélectionné
 function afficherDetail() {
   // on appel la page d'affichage de l'évènement
-  evtModule.setCurrentEvt(data.evt_data);
+  setCurrentEvt(data.evt_data);
   console.log('data', data.evt_data);
   router.push({
     name: 'detailEvenement',

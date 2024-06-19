@@ -7,7 +7,7 @@
   </q-card>
 </template>
 <script setup lang="ts">
-import ajoutEvenement from 'src/components/evenement/FormEvenement.vue';
+import ajoutEvenement from 'src/views/evenement/FormEvenement.vue';
 
 import { onBeforeMount, onBeforeUpdate } from 'vue';
 

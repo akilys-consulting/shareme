@@ -1,5 +1,5 @@
 <template>
-  <q-img class="img-size col-6" :src="getPathImg">
+  <q-img class="img-size" :src="getPathImg">
     <div class="absolute-bottom text-subtitle1 text-center">
       {{ titre }}
     </div></q-img

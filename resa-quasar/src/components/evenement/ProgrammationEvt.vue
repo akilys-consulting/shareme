@@ -2,6 +2,7 @@
   <q-toggle
     v-model="activeProgrammation"
     label="Evènement récurrent"
+    @click="setRecurrenceOff"
     left-label
   />
 
@@ -20,7 +21,12 @@
     <template v-slot:body="props">
       <q-tr :props="props">
         <q-td key="type" :props="props">
-          <q-select :options="listtypeProgrammation" v-model="props.row.type">
+          <q-select
+            :options="listtypeProgrammation"
+            map-options
+            emit-value
+            v-model="props.row.type"
+          >
           </q-select>
         </q-td>
         <q-td key="datedebut" :props="props">
@@ -152,6 +158,14 @@ const props = defineProps<{
   progEvt: ProgrammationType[];
 }>();
 
+const ForceValue = ref<ProgrammationType[]>([
+  {
+    type: '',
+    datedebut: '',
+    datefin: '',
+  },
+]);
+
 const columns = [
   { name: 'type', label: 'type progammation', field: 'type', align: 'left' },
   { name: 'datedebut', label: 'date debut', field: 'datedebut', align: 'left' },
@@ -162,6 +176,8 @@ const columns = [
 const activeProgrammation = ref(false);
 const programmation = ref(props.progEvt);
 
+const emit = defineEmits(['ForceRecuurence']);
+
 const listtypeProgrammation = ref(K_typeProgrammation);
 onMounted(() => {
   // on identifie si il y a une prgrammation
@@ -170,6 +186,19 @@ onMounted(() => {
       props.progEvt.length == 0 && props.progEvt[0].type == 'Days';
   }
 });
+
+function setRecurrenceOff() {
+  if (activeProgrammation.value) {
+    ForceValue.value = [
+      {
+        type: 'Days',
+        datedebut: props.progEvt[0].datedebut,
+        datefin: props.progEvt[0].datedebut,
+      },
+    ];
+    emit('ForceRecuurence', ForceValue.value);
+  }
+}
 </script>
 
 <style scoped>

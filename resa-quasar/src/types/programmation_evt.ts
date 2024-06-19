@@ -14,8 +14,8 @@ export const typeProgrammation = [
   'annuel',
   'specifique',
 ];
+
 export interface ProgrammationType {
-  id: number | null;
   type: string;
   datedebut: string;
   datefin: string;

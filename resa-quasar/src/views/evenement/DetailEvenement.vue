@@ -13,76 +13,46 @@
         align="justify"
         narrow-indicator
       >
-        <q-tab name="detail" icon="description" label="Description" />
-        <q-tab name="sortie" icon="groups" label="Sorties disponibles" />
         <q-tab
-          name="modifEvent"
+          name="detail"
           v-if="proprietaire"
           icon="edit_note"
           label="Modifier évènement"
         />
+        <q-tab
+          v-else
+          name="detail"
+          icon="description"
+          label="Description"
+        ></q-tab>
+        <q-tab name="sortie" icon="groups" label="Sorties disponibles" />
       </q-tabs>
     </q-toolbar>
     <q-separator />
 
     <q-tab-panels v-model="tab" animated>
-      <q-tab-panel name="detail">
-        <q-card>
-          <q-card-section horizontal>
-            <displayImgCategorie
-              :titre="currentEvt.titre"
-              :categorieTab="currentEvt.categories"
-            />
-            <q-card-section>
-              <q-card-section>
-                <div class="text-h4 col-12">{{ currentEvt.titre }}</div>
-              </q-card-section>
-              <q-separator />
-              <q-card-section>
-                <div class="text-subtitle1 col-12">
-                  Organisateur : Mairie de Toulouse
-                </div>
-              </q-card-section>
-
-              <q-separator />
-              <q-card-section>
-                <div class="text-subtitle1">Catégorie : balade, chateau</div>
-              </q-card-section>
-
-              <q-separator />
-              <q-card-section>
-                <div class="text-body1">
-                  {{ currentEvt.description }}
-                </div>
-              </q-card-section>
-            </q-card-section>
-          </q-card-section>
-          <div class="q-ma-sm" id="map"></div>
-        </q-card>
-      </q-tab-panel>
+      <q-tab-panel v-if="proprietaire" name="detail"><formEvt /> </q-tab-panel>
+      <q-tab-panel v-else name="detail"> <infoEvt /></q-tab-panel>
 
       <q-tab-panel name="sortie"> </q-tab-panel>
-
-      <q-tab-panel name="modifEvent"> </q-tab-panel>
     </q-tab-panels>
   </div>
 </template>
 <script setup lang="ts">
 import { ref, onBeforeMount, computed } from 'vue';
+import { evenementVide } from 'src/types/evenements';
 
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-import { evtStore } from 'src/stores/evenement';
-const evtModule = evtStore();
-
 import { userStore } from 'src/stores/users';
 const userModule = userStore();
 
-import { EvenementType } from 'src/types/evenements';
-import displayImgCategorie from 'src/components/ihm/LoadImgCategorie.vue';
-
-const currentEvt = ref<EvenementType>();
+import { getCurrentEvt } from 'src/utils/cookie';
+import infoEvt from 'src/components/evenement/infoEvenement.vue';
+import formEvt from 'src/components/evenement/FormEvenement.vue';
+const currentEvt = ref();
+const tab = ref('detail');
 
 // on regarde sur le user connecté est celui qui a créé l'évènement
 const proprietaire = computed(() => {
@@ -97,9 +67,11 @@ const proprietaire = computed(() => {
 });
 
 onBeforeMount(() => {
-  currentEvt.value = evtModule.getCurrentEvt;
+  currentEvt.value = getCurrentEvt();
+  if (typeof currentEvt.value == 'undefined') {
+    currentEvt.value = evenementVide;
+    router.push({ name: 'accueil' });
+  }
 });
-
-const tab = ref('detail');
 </script>
 <style></style>

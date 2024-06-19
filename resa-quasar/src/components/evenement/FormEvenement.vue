@@ -20,14 +20,15 @@
         </q-btn-toggle>
       </div>
       <div class="q-py-md">
+        <!--
         <gestionImage
           v-if="isPro"
           modelValue:modelValue.image
           :path="K_cheminImage"
-        ></gestionImage>
+        ></gestionImage>-->
       </div>
       <div class="q-py-md">
-        <programmation :progEvt="progEvt" />
+        <programmation :progEvt="modelValue.recurrence" @ForceRecuurence='ReccurenceSimple()'/>
       </div>
       <q-form class="q-gutter-md">
         <div class="q-pt-md row">
@@ -86,31 +87,53 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { type EvenementType, type categoriesType } from 'src/types/evenements';
+import { ref, onBeforeMount, computed } from 'vue';
+import { evenementVide, type categoriesType } from 'src/types/evenements';
+import {
+  ProgrammationType,
+  programmationParDefaut,
+} from 'src/types/programmation_evt';
 import adrManagement from 'src/components/ihm/AdrManagementgouv.vue';
+//import gestionImage from 'src/components/ihm/ManageImage.vue';
 import programmation from 'src/components/evenement/ProgrammationEvt.vue';
-import gestionImage from 'src/components/ihm/ManageImage.vue';
-import { evtStore } from 'src/stores/evenement';
-const evtModule = evtStore();
+
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+import { getCurrentEvt } from 'src/utils/cookie';
 
 import { userStore } from 'src/stores/users';
 const userModule = userStore();
-const K_cheminImage = '/images/evenements/';
 
-const modelValue = ref(evtModule.getCurrentEvt);
-const progEvt = modelValue.value.recurrence;
+const K_cheminImage = '/images/evenements/';
+const progEvt = ref<ProgrammationType[]>(programmationParDefaut);
+const modelValue = ref(evenementVide);
+
 const listCategories = ref<categoriesType>(['randonnée', 'théatre', 'sortie']);
 const isPro = ref(userModule.getIsPro);
 
-const getEtatEvenement = computed(() => {
-  return modelValue.value.actif ? 'green' : 'red';
+onBeforeMount(() => {
+  modelValue.value = getCurrentEvt();
+  if (typeof modelValue.value == 'undefined') {
+    modelValue.value = evenementVide;
+    router.push({ name: 'accueil' });
+  } else {
+    progEvt.value = modelValue.value.recurrence;
+  }
 });
 
-//
-// sauvegarde de l'évènement
+const getEtatEvenement = computed(() => {
+  if (typeof modelValue.value != 'undefined') {
+    return modelValue.value.actif ? 'green' : 'red';
+  }
+  return 'red';
+});
+
+function ReccurenceSimple(data:ProgrammationType[]){
+  modelValue.value.recurrence=data
+}
 function saveEvenement() {
-  console.log('prog', progRef.value.getNouvelleProg());
+  console.log('evt', modelValue.value);
 }
 </script>
 <style>
