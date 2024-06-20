@@ -22,9 +22,13 @@ export const userStore = defineStore('connexion', () => {
     return connected.value;
   });
 
-  const getIsPro = computed(() => {
+  const getIsPro = computed((): boolean => {
     setUserConnected();
-    return userConnected.value?.pro;
+    if (typeof userConnected.value == 'undefined') {
+      return false;
+    } else {
+      return userConnected.value.pro;
+    }
   });
   const getUserId = computed(() => {
     setUserConnected();

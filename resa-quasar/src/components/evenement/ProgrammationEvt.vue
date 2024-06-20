@@ -176,7 +176,7 @@ const columns = [
 const activeProgrammation = ref(false);
 const programmation = ref(props.progEvt);
 
-const emit = defineEmits(['ForceRecuurence']);
+const emit = defineEmits(['ForceReccurence']);
 
 const listtypeProgrammation = ref(K_typeProgrammation);
 onMounted(() => {
@@ -188,7 +188,7 @@ onMounted(() => {
 });
 
 function setRecurrenceOff() {
-  if (activeProgrammation.value) {
+  if (!activeProgrammation.value) {
     ForceValue.value = [
       {
         type: 'Days',
@@ -196,7 +196,7 @@ function setRecurrenceOff() {
         datefin: props.progEvt[0].datedebut,
       },
     ];
-    emit('ForceRecuurence', ForceValue.value);
+    emit('ForceReccurence', ForceValue.value);
   }
 }
 </script>

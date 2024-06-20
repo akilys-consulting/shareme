@@ -61,10 +61,95 @@ async function getUrl(file) {
   return '';
 }
 
-function ajoutFichier(files) {
-  emit('changeFile', files);
+function scaleImage(
+  srcwidth,
+  srcheight,
+  targetwidth,
+  targetheight,
+  fLetterBox
+) {
+  var result = { width: 0, height: 0, fScaleToTargetWidth: true };
+
+  if (
+    srcwidth <= 0 ||
+    srcheight <= 0 ||
+    targetwidth <= 0 ||
+    targetheight <= 0
+  ) {
+    return result;
+  }
+
+  // scale to the target width
+  var scaleX1 = targetwidth;
+  var scaleY1 = (srcheight * targetwidth) / srcwidth;
+
+  // scale to the target height
+  var scaleX2 = (srcwidth * targetheight) / srcheight;
+  var scaleY2 = targetheight;
+
+  // now figure out which one we should use
+  var fScaleOnWidth = scaleX2 > targetwidth;
+  if (fScaleOnWidth) {
+    fScaleOnWidth = fLetterBox;
+  } else {
+    fScaleOnWidth = !fLetterBox;
+  }
+
+  if (fScaleOnWidth) {
+    result.width = Math.floor(scaleX1);
+    result.height = Math.floor(scaleY1);
+    result.fScaleToTargetWidth = true;
+  } else {
+    result.width = Math.floor(scaleX2);
+    result.height = Math.floor(scaleY2);
+    result.fScaleToTargetWidth = false;
+  }
+  result.targetleft = Math.floor((targetwidth - result.width) / 2);
+  result.targettop = Math.floor((targetheight - result.height) / 2);
+
+  return result;
 }
 
+function resizeImage(file) {
+  return new Promise(function (resolve, reject) {
+    try {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          // Définir la nouvelle taille
+          var result = scaleImage(img.width, img.height, 250, 150, true);
+          canvas.height = result.height;
+          canvas.width = result.width;
+          ctx.drawImage(img, 0, 0, result.width, result.height);
+          var resizeImg = canvas.toDataURL('image/jpeg');
+          resolve({ data: resizeImg, type: 'jpeg' });
+        };
+        img.addEventListener('error', function imgOnError(error) {
+          reject(error);
+        });
+        console.log('resized file', e.target.result);
+        img.src = e.target.result;
+      };
+      console.log('resized file', file);
+      reader.readAsDataURL(file);
+      // When there's an error during load, reject the promise
+    } catch (error) {
+      console.log('error reszise', error.message);
+      reject(error);
+    }
+  });
+}
+
+//
+// on a charger une nouvelle image
+async function ajoutFichier(files) {
+  const response = await resizeImage(files[0]);
+  console.log('resize', response);
+  emit('changeFile', response.data);
+}
 function onRejected() {
   // Notify plugin needs to be installed
   // https://quasar.dev/quasar-plugins/notify#Installation

@@ -8,7 +8,7 @@ export const K_storageAvatarUser = 'images/avatar/';
 export const K_imgDefaut = 'imageParDefaut.png';
 export const K_resize_img_width = 320;
 export const K_resize_img_height = 230;
-export const K_size_avatar = '300000';
+export const K_size_avatar = '3000000000';
 
 export const K_InitMdp = 'resaAll@2023';
 

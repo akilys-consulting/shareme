@@ -20,15 +20,19 @@
         </q-btn-toggle>
       </div>
       <div class="q-py-md">
-        <!--
         <gestionImage
           v-if="isPro"
           modelValue:modelValue.image
           :path="K_cheminImage"
-        ></gestionImage>-->
+          @update:modelValue="miseAJourImage"
+          @changeFile="chargerFichierImage"
+        ></gestionImage>
       </div>
       <div class="q-py-md">
-        <programmation :progEvt="modelValue.recurrence" @ForceRecuurence='ReccurenceSimple()'/>
+        <programmation
+          :progEvt="modelValue.recurrence"
+          @ForceReccurence="ReccurenceSimple"
+        />
       </div>
       <q-form class="q-gutter-md">
         <div class="q-pt-md row">
@@ -72,7 +76,7 @@
         />
 
         <div>
-          <q-btn label="Valider" @click="saveEvenement" color="primary" />
+          <q-btn label="Valider" @click="updateEvenement" color="primary" />
           <q-btn
             label="Annuler"
             type="reset"
@@ -88,31 +92,44 @@
 
 <script setup lang="ts">
 import { ref, onBeforeMount, computed } from 'vue';
+//
+// import des types
 import { evenementVide, type categoriesType } from 'src/types/evenements';
 import {
   ProgrammationType,
   programmationParDefaut,
 } from 'src/types/programmation_evt';
-import adrManagement from 'src/components/ihm/AdrManagementgouv.vue';
-//import gestionImage from 'src/components/ihm/ManageImage.vue';
-import programmation from 'src/components/evenement/ProgrammationEvt.vue';
-
+//
+// import des stores
+import { ihmStore } from 'src/stores/ihm';
+const IhmModule = ihmStore();
 import { useRouter } from 'vue-router';
-const router = useRouter();
-
-import { getCurrentEvt } from 'src/utils/cookie';
-
 import { userStore } from 'src/stores/users';
 const userModule = userStore();
+//
+// import du router
+const router = useRouter();
+//
+// import des fonctions spécifiques
+import { getCurrentEvt } from 'src/utils/cookie';
+//
+// import des composants
+import adrManagement from 'src/components/ihm/AdrManagementgouv.vue';
+import gestionImage from 'src/components/ihm/ManageImage.vue';
+import programmation from 'src/components/evenement/ProgrammationEvt.vue';
+
+import { saveEvenement } from 'src/api/evenement';
+import { copieImage } from 'src/api/ihm';
 
 const K_cheminImage = '/images/evenements/';
 const progEvt = ref<ProgrammationType[]>(programmationParDefaut);
 const modelValue = ref(evenementVide);
-
+const isPro = ref(false);
 const listCategories = ref<categoriesType>(['randonnée', 'théatre', 'sortie']);
-const isPro = ref(userModule.getIsPro);
 
 onBeforeMount(() => {
+  isPro.value = userModule.getIsPro;
+
   modelValue.value = getCurrentEvt();
   if (typeof modelValue.value == 'undefined') {
     modelValue.value = evenementVide;
@@ -129,11 +146,34 @@ const getEtatEvenement = computed(() => {
   return 'red';
 });
 
-function ReccurenceSimple(data:ProgrammationType[]){
-  modelValue.value.recurrence=data
+function ReccurenceSimple(data: ProgrammationType[]) {
+  modelValue.value.recurrence = data;
 }
-function saveEvenement() {
-  console.log('evt', modelValue.value);
+
+function miseAJourImage(path: string) {
+  modelValue.value.image = path;
+}
+
+//
+// appelé par l'emit du componsant ManageImage
+// il recoit l'image uploadée et retaillée
+// on appel l'API Laravel pour downloader l'image
+// on mémroise dans l'évènement courant le nom de l'iamge
+async function chargerFichierImage(ImgBase64: string) {
+  const response = await copieImage(ImgBase64);
+  console.log('retour image', response.data[0].fichier);
+  if (response.status && response.data)
+    modelValue.value.image = response.data[0].fichier;
+}
+//
+// Mise à jour de l'évènement
+async function updateEvenement() {
+  console.log('evenment', modelValue.value);
+  const response = await saveEvenement(modelValue.value);
+  if (response.status) {
+    IhmModule.displayInfo({ code: 'SAOK' });
+  }
+  console.log('reponse', response);
 }
 </script>
 <style>

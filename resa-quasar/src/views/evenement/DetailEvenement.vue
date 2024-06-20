@@ -31,7 +31,7 @@
     <q-separator />
 
     <q-tab-panels v-model="tab" animated>
-      <q-tab-panel v-if="proprietaire" name="detail"><formEvt /> </q-tab-panel>
+      <q-tab-panel v-if="proprietaire" name="detail"><formEvt /></q-tab-panel>
       <q-tab-panel v-else name="detail"> <infoEvt /></q-tab-panel>
 
       <q-tab-panel name="sortie"> </q-tab-panel>
@@ -49,8 +49,10 @@ import { userStore } from 'src/stores/users';
 const userModule = userStore();
 
 import { getCurrentEvt } from 'src/utils/cookie';
+
 import infoEvt from 'src/components/evenement/infoEvenement.vue';
 import formEvt from 'src/components/evenement/FormEvenement.vue';
+
 const currentEvt = ref();
 const tab = ref('detail');
 

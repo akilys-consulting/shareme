@@ -56,7 +56,7 @@ class EvenementController extends Controller
             'titre' => 'required',
         ]);
 
-        $evenement = Evenements::create($request->all());
+        $evenement = Evenement::create($request->all());
 
         return response()->json($evenement, 201);
     }
@@ -64,26 +64,30 @@ class EvenementController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-        return view('Evenements.show', compact('task'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $evenement = Evenement::updateOrCreate(
+            [
+                'id' => $request->input('data.id')
+            ],
+            [   'titre' => $request->input('data.titre'), 
+                'description' => $request->input('data.description'),
+                'recurrence' => $request->input('data.recurrence'),
+                'adresse' => $request->input('data.adresse'),
+                'categories' => $request->input('data.categories'),
+                'url' => $request->input('data.url'),
+                'actif' => $request->input('data.actif'),
+                'auteur' => $request->input('data.auteur'),
+                'event_id' => $request->input('data.event_id'),
+                'image' => $request->input('data.image'),
+                'nb_personnes' => $request->input('nb_personnes'),            ]
+
+        );
+        return response()->json($evenement, 201);
     }
 
     /**

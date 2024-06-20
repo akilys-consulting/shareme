@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EvenementController;
 use App\Http\COntrollers\GoogleController;
+use App\Http\COntrollers\ImageUploadController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,7 +30,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/getAllEvt', [EvenementController::class, 'getAll']);
-
+Route::post('/miseAJourEvenement', [EvenementController::class, 'update']);
 
 Route::middleware('auth:sanctum')->get('/auth-check', function (Request $request) {
     return response()->json(['authenticated' => true, 'user' => $request->user()]);
@@ -41,3 +42,5 @@ Route::get('/auth-check', function () {
 
 Route::get('auth/google', [GoogleController::class,'redirectToGoogle']);
 Route::get('auth/google/callback', [GoogleController::class,'handleGoogleCallback']);
+
+Route::post('/upload', [ImageUploadController::class, 'upload']);
