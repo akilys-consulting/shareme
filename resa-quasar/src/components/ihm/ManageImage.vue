@@ -15,7 +15,7 @@
         @removed="deleteFile"
       />
     </div>
-    <div class="text-center q-pl-xl col col-6">
+    <div class="text-center q-pl-xl col col-6" v-if="modelValue">
       <q-img class="col-6 img-size" :src="modelValue"> </q-img>
     </div>
   </div>
@@ -156,3 +156,8 @@ function onRejected() {
   ihmModule.displayError({ code: 'FUEX', param: K_size_avatar });
 }
 </script>
+<style scoped>
+.img-size {
+  max-width: 400px;
+}
+</style>
