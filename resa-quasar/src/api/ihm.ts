@@ -15,3 +15,11 @@ export const copieImage = async (image: string): Promise<ApiType> => {
     return { status: false, data: [{}], message: (error as Error).message };
   }
 };
+export const getImage = (nomImage: string) => {
+  try {
+    const imageData = api.get('/photo/' + nomImage);
+    return imageData;
+  } catch (error) {
+    return { status: false, data: [{}], message: (error as Error).message };
+  }
+};

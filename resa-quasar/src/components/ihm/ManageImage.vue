@@ -1,42 +1,44 @@
 <template>
-  <div class="row">
-    <div class="col col-6 q-pr-xl">
-      <q-uploader
-        color="secondary"
-        v-model="selectedImage"
-        label="Nouvelle image (max 2k)"
-        class="q-pt-md"
-        @rejected="onRejected"
-        :max-file-size="K_size_avatar"
-        accept=".jpeg,.jpg,.png,.gif"
-        :url="getUrl"
-        @added="ajoutFichier"
-        style="max-width: 300px"
-        @removed="deleteFile"
-      />
-    </div>
-    <div class="text-center q-pl-xl col col-6" v-if="modelValue">
-      <q-img class="col-6 img-size" :src="modelValue"> </q-img>
-    </div>
+  <div class="row" v-if="acceptUpload">
+    <q-uploader
+      flat
+      v-model="selectedImage"
+      label="Nouvelle image (max 2k)"
+      class="col-12"
+      @rejected="onRejected"
+      :max-file-size="K_size_avatar"
+      accept=".jpeg,.jpg,.png,.gif"
+      :url="getUrl"
+      @added="ajoutFichier"
+      style="max-width: 300px"
+      @removed="deleteFile"
+    />
+    <q-img class="img-size col q-ml-xl col-12" :src="modelValue"> </q-img>
   </div>
+
+  <q-img class="img-size-only" v-else :src="modelValue">
+    <div class="absolute-bottom text-subtitle1 text-center">
+      {{ titre }}
+    </div></q-img
+  >
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
 import { ihmStore } from 'src/stores/ihm';
-import { K_imgDefaut, K_size_avatar } from 'src/utils/config';
+import { K_size_avatar } from 'src/utils/config';
 
 const ihmModule = ihmStore();
-const props = defineProps(['modelValue', 'path']);
-//
-// récupération de la valeur d'origine
-//
-// permet de mettre à jour la props
+const props = defineProps({
+  titre: { type: String },
+  modelValue: { type: String, required: true },
+  acceptUpload: { type: Boolean },
+});
+
 const modelValue = computed({
   // Use computed to wrap the object
   get: () => {
-    if (!props.modelValue) return props.path + K_imgDefaut;
-    return props.modelValue;
+    return 'http://localhost:8100/api/photo/' + props.modelValue;
   },
   set: (value) => {
     emit('update:modelValue', value);
@@ -158,6 +160,11 @@ function onRejected() {
 </script>
 <style scoped>
 .img-size {
-  max-width: 400px;
+  max-width: 600px;
+  max-height: 600px;
+}
+.img-size-only {
+  max-height: 200px !important;
+  max-width: 300px !important;
 }
 </style>

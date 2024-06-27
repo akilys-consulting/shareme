@@ -6,9 +6,17 @@
     </q-card-section>
     <q-card-section horizontal>
       <displayImgCategorie
+        v-if="!evt_data.image"
         :titre="evt_data.titre"
         :categorieTab="evt_data.categories"
       />
+      <gestionImage
+        v-else
+        :acceptUpload="false"
+        :modelValue="evt_data.image"
+        :titre="evt_data.titre"
+      ></gestionImage>
+
       <q-card-section class="q-ml-lg">
         <div class="text-subtitle1">
           <div class="ms-4 text-orange-14 rox">
@@ -96,8 +104,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { type EvenementType } from 'src/types/evenements';
+
 import displayImgCategorie from 'src/components/ihm/LoadImgCategorie.vue';
+import gestionImage from 'src/components/ihm/ManageImage.vue';
+
 import { useRouter } from 'vue-router';
+const router = useRouter();
 
 import { setCurrentEvt } from 'src/utils/cookie';
 
@@ -105,8 +117,6 @@ import { userStore } from 'src/stores/users';
 const userModule = userStore();
 
 const data = defineProps<{ evt_data: EvenementType }>();
-
-const router = useRouter();
 
 const convertCategorie = computed(() => {
   return data.evt_data.categories.toString();

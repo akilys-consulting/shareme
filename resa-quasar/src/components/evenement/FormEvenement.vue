@@ -2,28 +2,46 @@
   <q-card flat>
     <div class="q-pa-lg">
       <div v-if="isPro" class="col col-12">
-        <q-btn-toggle
-          v-model="modelValue.actif"
-          :toggle-color="getEtatEvenement"
-          :options="[
-            { label: 'En ligne', value: true, slot: 'actif' },
-            { label: 'Hors ligne', value: false, slot: 'inactif' },
-          ]"
-        >
-          <template v-slot:actif>
-            <q-tooltip>Mise en ligne</q-tooltip>
-          </template>
+        <div class="row q-pb-md">
+          <div class="col col-auto q-mr-xl q-mt-sm">Mise en ligne</div>
+          <div class="col col-auto">
+            <q-btn-toggle
+              v-model="modelValue.actif"
+              :toggle-color="getEtatEvenement"
+              :options="[
+                { label: 'En ligne', value: true, slot: 'actif' },
+                { label: 'Hors ligne', value: false, slot: 'inactif' },
+              ]"
+            >
+              <template v-slot:actif>
+                <q-tooltip>Mise en ligne</q-tooltip>
+              </template>
 
-          <template v-slot:inactif>
-            <q-tooltip>Mise hors ligne</q-tooltip>
-          </template>
-        </q-btn-toggle>
+              <template v-slot:inactif>
+                <q-tooltip>Mise hors ligne</q-tooltip>
+              </template>
+            </q-btn-toggle>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 q-pr-md q-pb-md">
+        <q-input
+        bottom-slots
+          v-model="modelValue.titre"
+          label="Nom évènement*"
+          counter
+          maxlength="50"
+          lazy-rules
+          :rules="[(val) => (val && val.length > 0) || 'champ oblogatoire']"
+        >
+          <template v-slot:hint> nb caractères : </template></q-input
+        >
       </div>
       <div class="q-py-md">
         <gestionImage
           v-if="isPro"
-          modelValue:modelValue.image
-          :path="K_cheminImage"
+          :modelValue="modelValue.image"
+          :acceptUpload="true"
           @update:modelValue="miseAJourImage"
           @changeFile="chargerFichierImage"
         ></gestionImage>
@@ -36,17 +54,6 @@
       </div>
       <q-form class="q-gutter-md">
         <div class="q-pt-md row">
-          <div class="col-6 q-pr-md">
-            <q-input
-              v-model="modelValue.titre"
-              label="Nom évènement*"
-              counter
-              maxlength="50"
-              hint="titre de l'activité"
-              lazy-rules
-              :rules="[(val) => (val && val.length > 0) || 'champ oblogatoire']"
-            />
-          </div>
           <div class="col-12 q-pt-md">
             <q-input v-model="modelValue.url" label="Lien vers site évènement">
               <template v-slot:prepend>
@@ -121,7 +128,6 @@ import programmation from 'src/components/evenement/ProgrammationEvt.vue';
 import { saveEvenement } from 'src/api/evenement';
 import { copieImage } from 'src/api/ihm';
 
-const K_cheminImage = '/images/evenements/';
 const progEvt = ref<ProgrammationType[]>(programmationParDefaut);
 const modelValue = ref(evenementVide);
 const isPro = ref(false);
