@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { categoriesType } from 'src/types/evenements';
-import { displayCategorie } from 'src/types/ihm';
+import {displayCategorie} from 'src/types/ihm'
 
 const data = defineProps<{
   categorieTab: categoriesType;
