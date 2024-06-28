@@ -5,40 +5,36 @@
         <displayImgCategorie
           :titre="currentEvt.titre"
           :categorieTab="currentEvt.categories"
+          :display="displayCategorie.page"
       /></q-card-section>
-      <q-card-section>
-        <q-card-section>
-          <div class="text-h4 col-12">{{ currentEvt.titre }}</div>
+      <q-card-section class="col-7">
+        <q-card-section class="text-h5">
+          {{ currentEvt.titre }}
         </q-card-section>
-        <q-separator />
-        <q-card-section>
-          <div class="text-subtitle1 col-12">
-            Organisateur : {{ currentEvt.auteur.name }}
-          </div>
+        <q-separator inset />
+        <q-card-section class="text-subtitle2">
+          Organisateur : {{ currentEvt.auteur.name }}
         </q-card-section>
 
-        <q-separator />
-        <q-card-section>
-          <div class="text-subtitle1 text-orange-14">
-            Catégories : {{ convertCategorie }}
-          </div>
+        <q-separator inset />
+        <q-card-section class="text-subtitle2">
+          Catégories : {{ convertCategorie }}
         </q-card-section>
 
-        <q-separator />
-        <q-card-section>
-          <div class="text-body1">
-            {{ currentEvt.description }}
-          </div>
+        <q-separator inset />
+        <q-card-section class="text-body1">
+          {{ currentEvt.description }}
         </q-card-section>
+        <div id="map" class="mapSize"></div>
       </q-card-section>
     </q-card-section>
-    <div class="q-ma-sm" id="map"></div>
   </q-card>
 </template>
 <script setup lang="ts">
-import { ref, onBeforeMount, computed } from 'vue';
+import { ref, onBeforeMount, onMounted, computed } from 'vue';
 
 import { EvenementType, evenementVide } from 'src/types/evenements';
+import { displayCategorie } from 'src/types/ihm';
 
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -46,7 +42,8 @@ const router = useRouter();
 import { getCurrentEvt } from 'src/utils/cookie';
 
 import displayImgCategorie from 'src/components/ihm/LoadImgCategorie.vue';
-
+import leaflet from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 const currentEvt = ref<EvenementType>(evenementVide);
 
 onBeforeMount(() => {
@@ -57,7 +54,31 @@ onBeforeMount(() => {
   }
 });
 
+onMounted(() => {
+  let mymap;
+  mymap = leaflet.map('map').setView([51.505, -0.09], 13);
+
+  leaflet;
+  leaflet
+    .tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+      {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }
+    )
+    .addTo(mymap);
+  let marker = leaflet.marker([51.5, -0.09]).addTo(mymap);
+});
+
 const convertCategorie = computed(() => {
   return currentEvt.value.categories.toString();
 });
 </script>
+<style scoped>
+.mapSize {
+  height: 300px !important;
+  width: 100% !important;
+}
+</style>

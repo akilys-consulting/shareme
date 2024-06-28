@@ -17,6 +17,11 @@
   </div>
 
   <q-img class="img-size-only" v-else :src="modelValue">
+    <q-chip class="card-filtre" size="md">
+      Pro
+      <q-tooltip> Tooltip </q-tooltip>
+    </q-chip>
+
     <div class="absolute-bottom text-subtitle1 text-center">
       {{ titre }}
     </div></q-img
@@ -64,11 +69,11 @@ async function getUrl(file) {
 }
 
 function scaleImage(
-  srcwidth,
-  srcheight,
-  targetwidth,
-  targetheight,
-  fLetterBox
+  srcwidth: number,
+  srcheight: number,
+  targetwidth: number,
+  targetheight: number,
+  fLetterBox: string
 ) {
   var result = { width: 0, height: 0, fScaleToTargetWidth: true };
 
@@ -166,5 +171,9 @@ function onRejected() {
 .img-size-only {
   max-height: 200px !important;
   max-width: 300px !important;
+}
+.card-filtre {
+  background-color: rgba(0, 0, 0, 0.363);
+  color: rgb(255, 255, 255);
 }
 </style>

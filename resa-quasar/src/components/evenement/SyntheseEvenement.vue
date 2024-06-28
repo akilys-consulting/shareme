@@ -2,13 +2,14 @@
   <q-card class="cardEvent" @click="afficherDetail()">
     <q-card-section vertical class="text-body2 bg-blue-grey-1">
       <!--<q-icon class="q-mr-sm" name="today" />{{ evt_data.date_debut }}-->
-      <q-icon class="q-mr-sm" name="schedule" />12:00
+      <q-icon class="q-mr-sm" name="schedule" />10/06/2024 15h00
     </q-card-section>
     <q-card-section horizontal>
       <displayImgCategorie
         v-if="!evt_data.image"
         :titre="evt_data.titre"
         :categorieTab="evt_data.categories"
+        :display="displayCategorie.tab"
       />
       <gestionImage
         v-else
@@ -102,9 +103,9 @@
   </q-card>-->
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { type EvenementType } from 'src/types/evenements';
-
+import {displayCategorie} from 'src/types/ihm'
 import displayImgCategorie from 'src/components/ihm/LoadImgCategorie.vue';
 import gestionImage from 'src/components/ihm/ManageImage.vue';
 
@@ -125,6 +126,8 @@ const convertCategorie = computed(() => {
 const addActivites = computed(() => {
   return userModule.getIsConnected;
 });
+
+const display = ref('tab');
 //
 // fonction d'affichage de l'évènement sélectionné
 function afficherDetail() {

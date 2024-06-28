@@ -27,3 +27,7 @@ export interface imageUpload {
   fichier: string;
   type: string;
 }
+export enum displayCategorie {
+  tab,
+  page,
+}
