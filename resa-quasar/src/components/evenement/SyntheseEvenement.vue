@@ -105,7 +105,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { type EvenementType } from 'src/types/evenements';
-import {displayCategorie} from 'src/types/ihm'
+import { displayCategorie } from 'src/types/ihm';
 import displayImgCategorie from 'src/components/ihm/LoadImgCategorie.vue';
 import gestionImage from 'src/components/ihm/ManageImage.vue';
 

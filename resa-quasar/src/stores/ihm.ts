@@ -91,7 +91,7 @@ export const ihmStore = defineStore('ihm', () => {
     setMessage(messageData);
     Notify.create({
       type: 'positive',
-      color: 'red-3',
+      color: 'blue-grey-3',
       message: i18n.global.t('message.' + message.value.code, {
         PARAM: message.value.param,
       }),
@@ -103,6 +103,7 @@ export const ihmStore = defineStore('ihm', () => {
     setMessage(messageData);
     Notify.create({
       type: 'negative',
+      color: 'red-7',
       message: i18n.global.t('message.' + message.value.code, {
         PARAM: message.value.param,
       }),
@@ -114,9 +115,9 @@ export const ihmStore = defineStore('ihm', () => {
   function startWaiting() {
     Loading.show({
       spinner: QSpinnerGrid,
-      spinnerColor: 'red-5',
-      spinnerSize: 140,
-      backgroundColor: 'rgba(94, 26, 26, 0.178)',
+      spinnerColor: 'red-10',
+      spinnerSize: 80,
+      backgroundColor: 'blue-grey-4',
       message: 'Action en cours...',
       messageColor: '#a7293e',
     });
