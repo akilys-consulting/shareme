@@ -40,13 +40,15 @@
           >
         </div>
         <div class="q-py-md">
-          <gestionImage
-            v-if="isPro"
-            :modelValue="modelValue.image"
-            :acceptUpload="true"
-            @update:modelValue="miseAJourImage"
-            @changeFile="chargerFichierImage"
-          ></gestionImage>
+          <q-card class="q-pa-md">
+            <gestionImage
+              v-if="isPro"
+              :modelValue="modelValue.image"
+              :acceptUpload="true"
+              @update:modelValue="miseAJourImage"
+              @changeFile="chargerFichierImage"
+            ></gestionImage
+          ></q-card>
         </div>
         <div class="q-py-md">
           <programmation

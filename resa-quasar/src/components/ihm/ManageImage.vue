@@ -1,7 +1,6 @@
 <template>
   <div class="row" v-if="acceptUpload">
     <q-uploader
-      flat
       v-model="selectedImage"
       label="Nouvelle image (max 2k)"
       class="col-12"
