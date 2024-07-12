@@ -72,16 +72,16 @@ class EvenementController extends Controller
     {
         $evenement = Evenement::updateOrCreate(
             [
-                'id' => $request->input('data.id')
+                'id' => $request->input('data.id')==-1?null:$request->input('data.id')
             ],
             [   'titre' => $request->input('data.titre'), 
                 'description' => $request->input('data.description'),
-                'recurrence' => $request->input('data.recurrence'),
-                'adresse' => $request->input('data.adresse'),
-                'categories' => $request->input('data.categories'),
+                'recurrence' => json_encode($request->input('data.recurrence')),
+                'adresse' => json_encode($request->input('data.adresse')),
+                'categories' => json_encode($request->input('data.categories')),
                 'url' => $request->input('data.url'),
                 'actif' => $request->input('data.actif'),
-                'auteur' => $request->input('data.auteur'),
+                'auteur' => json_encode($request->input('data.auteur')),
                 'event_id' => $request->input('data.event_id'),
                 'image' => $request->input('data.image'),
                 'nb_personnes' => $request->input('nb_personnes'),            ]

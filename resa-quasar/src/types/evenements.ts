@@ -59,6 +59,19 @@ export interface typePlanning {
   permanentDays?: string[];
 }
 
+export const nomCategories = {
+  sortie: 'Sortie',
+  theatre: 'Théatre',
+  randonnee: 'Randonnée',
+  concert: 'Concert',
+};
+
+export const listCategories = [
+  nomCategories.sortie,
+  nomCategories.theatre,
+  nomCategories.randonnee,
+  nomCategories.concert,
+];
 export const evenementVide: EvenementType = {
   id: -1,
   titre: 'Nouveau titre',
@@ -72,9 +85,9 @@ export const evenementVide: EvenementType = {
       },
     },
   },
-  categories: [],
+  categories: [nomCategories.sortie],
   description: '',
   recurrence: programmationParDefaut,
   actif: false,
-  auteur: { id: -1, nom: '' },
+  auteur: { id: -1, name: '' },
 };

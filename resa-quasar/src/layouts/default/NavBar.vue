@@ -80,9 +80,10 @@ const userModule = userStore();
 
 import { logout } from 'src/api/users';
 
+import { removeCurrentEvt } from 'src/utils/cookie';
+
 const { connected } = storeToRefs(userModule);
 const dateJour = ref<string>();
-const tab = ref('home');
 
 onMounted(() => {
   userModule.refreshConnected();
@@ -113,7 +114,8 @@ async function deconnecter() {
 }
 
 function ajouterEvenement() {
-  //evtModule.setCurrentEvt(evenementVide);
+  //on efface l'évènement mémorisé
+  removeCurrentEvt();
   router.push({
     name: 'ajoutEvenement',
   });
