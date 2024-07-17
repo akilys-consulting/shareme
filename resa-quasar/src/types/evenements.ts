@@ -24,7 +24,7 @@ export interface API_EvenementType {
   description?: string;
   url?: string;
   adresse: string;
-  auteur: string;
+  auteur: auteur;
   categories: string;
   recurrence: string;
   actif: boolean;

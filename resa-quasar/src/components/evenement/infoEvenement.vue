@@ -13,7 +13,7 @@
         </q-card-section>
         <q-separator inset />
         <q-card-section class="text-subtitle2">
-          Organisateur : {{ currentEvt.auteur.name }}
+          Organisateur : {{ convertAuteur }}
         </q-card-section>
 
         <q-separator inset />
@@ -70,6 +70,12 @@ onMounted(() => {
     )
     .addTo(mymap);
   let marker = leaflet.marker([51.5, -0.09]).addTo(mymap);
+});
+
+const convertAuteur = computed(() => {
+  if (currentEvt.value.auteur.name)
+    return currentEvt.value.categories.toString();
+  else return '';
 });
 
 const convertCategorie = computed(() => {

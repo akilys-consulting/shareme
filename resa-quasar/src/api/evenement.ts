@@ -19,7 +19,7 @@ export const listEvenements = async (): Promise<ApiType> => {
 
       //
       // on parse les colonnes JSON
-      response.data.evenements.forEach((data: API_EvenementType) => {
+      response.data.evenements.forEach((data: EvenementType) => {
         // gestion des colonnes standards
         allEvenements.push({
           id: data.id,
@@ -30,10 +30,10 @@ export const listEvenements = async (): Promise<ApiType> => {
           event_id: data.event_id,
           image: data.image,
           nb_personnes: data.nb_personnes,
-          auteur: JSON.parse(data.auteur),
-          adresse: JSON.parse(data.adresse),
-          categories: JSON.parse(data.categories),
-          recurrence: JSON.parse(data.recurrence),
+          auteur: data.auteur,
+          adresse: data.adresse,
+          categories: data.categories,
+          recurrence: data.recurrence,
         });
       });
       return {

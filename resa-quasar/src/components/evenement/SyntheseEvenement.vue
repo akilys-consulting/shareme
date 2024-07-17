@@ -128,6 +128,7 @@ const addActivites = computed(() => {
 });
 
 const display = ref('tab');
+
 //
 // fonction d'affichage de l'évènement sélectionné
 function afficherDetail() {
