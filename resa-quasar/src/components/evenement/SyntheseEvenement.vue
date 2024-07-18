@@ -2,13 +2,23 @@
   <q-card class="cardEvent" @click="afficherDetail()">
     <q-card-section vertical class="text-body2 bg-blue-grey-1">
       <!--<q-icon class="q-mr-sm" name="today" />{{ evt_data.date_debut }}-->
-      <q-icon class="q-mr-sm" name="schedule" />12:00
+      <q-icon class="q-mr-sm" name="schedule" />10/06/2024 15h00
     </q-card-section>
     <q-card-section horizontal>
       <displayImgCategorie
+        v-if="!evt_data.image"
         :titre="evt_data.titre"
         :categorieTab="evt_data.categories"
+        :display="displayCategorie.tab"
       />
+      <gestionImage
+        v-else
+        :acceptUpload="false"
+        :modelValue="evt_data.image"
+        :titre="evt_data.titre"
+        class="img-size-only"
+      ></gestionImage>
+
       <q-card-section class="q-ml-lg">
         <div class="text-subtitle1">
           <div class="ms-4 text-orange-14 rox">
@@ -94,10 +104,14 @@
   </q-card>-->
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { type EvenementType } from 'src/types/evenements';
+import { displayCategorie } from 'src/types/ihm';
 import displayImgCategorie from 'src/components/ihm/LoadImgCategorie.vue';
+import gestionImage from 'src/components/ihm/ManageImage.vue';
+
 import { useRouter } from 'vue-router';
+const router = useRouter();
 
 import { setCurrentEvt } from 'src/utils/cookie';
 
@@ -106,8 +120,6 @@ const userModule = userStore();
 
 const data = defineProps<{ evt_data: EvenementType }>();
 
-const router = useRouter();
-
 const convertCategorie = computed(() => {
   return data.evt_data.categories.toString();
 });
@@ -115,6 +127,9 @@ const convertCategorie = computed(() => {
 const addActivites = computed(() => {
   return userModule.getIsConnected;
 });
+
+const display = ref('tab');
+
 //
 // fonction d'affichage de l'évènement sélectionné
 function afficherDetail() {
@@ -131,6 +146,10 @@ function afficherDetail() {
 .q-card__section--vert {
   width: 100% !important;
   padding: 4px;
+}
+.img-size-only {
+  max-height: 200px !important;
+  max-width: 300px !important;
 }
 .q-card__actions {
   padding: 0px !important;

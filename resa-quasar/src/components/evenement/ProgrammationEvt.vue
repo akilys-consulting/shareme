@@ -38,7 +38,11 @@
                   transition-show="scale"
                   transition-hide="scale"
                 >
-                  <q-date v-model="props.row.datedebut" mask="DD/MM/YYYY HH:mm">
+                  <q-date
+                    v-model="props.row.datedebut"
+                    mask="DD/MM/YYYY HH:mm"
+                    :options="startDate"
+                  >
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
@@ -77,7 +81,11 @@
                   transition-show="scale"
                   transition-hide="scale"
                 >
-                  <q-date v-model="props.row.dateFin" mask="DD/MM/YYYY HH:mm">
+                  <q-date
+                    v-model="props.row.dateFin"
+                    :options="endDate"
+                    mask="DD/MM/YYYY HH:mm"
+                  >
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
@@ -117,6 +125,7 @@
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
             <q-date
               v-model="programmation[0].datedebut"
+              :options="startDate"
               mask="DD/MM/YYYY HH:mm"
             >
               <div class="row items-center justify-end">
@@ -148,6 +157,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { date } from 'quasar';
 import {
   type ProgrammationType,
   K_typeProgrammation,
@@ -177,6 +187,22 @@ const activeProgrammation = ref(false);
 const programmation = ref(props.progEvt);
 
 const emit = defineEmits(['ForceReccurence']);
+
+//
+// permet de definir la limite basse dans le choix de la date de debut
+function startDate(dateDebut: string) {
+  return dateDebut >= date.formatDate(Date.now(), 'YYYY/MM/DD');
+}
+
+//
+// permet de definir la limite basse dans le choix de la date de fin
+function endDate(dateFin: string) {
+  const dateToStart = date.extractDate(
+    props.progEvt[0].datedebut,
+    'DD/MM/YYYY HH:mm'
+  );
+  return dateFin >= date.formatDate(dateToStart, 'YYYY/MM/DD');
+}
 
 const listtypeProgrammation = ref(K_typeProgrammation);
 onMounted(() => {
